@@ -136,16 +136,17 @@ def configure(keymap):
 
     # Firefox
     keymap_firefox = keymap.defineWindowKeymap( exe_name="firefox.exe" )
-    keymap_firefox[ "U0-Q" ] = "Ctrl-W"
+    keymap_firefox[ "U0-I" ] = "Ctrl-L"
+    keymap_firefox[ "U0-Z" ] = "Ctrl-W"
 
     # Console
     keymap_console = keymap.defineWindowKeymap( exe_name="Console.exe" )
-    keymap_console[ "LCtrl-V" ] = "Shift-Insert"
+    keymap_console[ "U0-V" ] = "Shift-Insert"
 
     # mintty
     keymap_mintty = keymap.defineWindowKeymap( exe_name="mintty.exe" )
-    keymap_mintty[ "LCtrl-V" ] = "Shift-Insert"
+    keymap_mintty[ "U0-V" ] = "Shift-Insert"
 
     # gvim
     keymap_gvim = keymap.defineWindowKeymap( exe_name="gvim.exe" )
-    keymap_gvim[ "LCtrl-V" ] = "Shift-Insert"
+    keymap_gvim[ "U0-V" ] = "Shift-Insert"
