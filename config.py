@@ -63,15 +63,6 @@ def configure(keymap):
     keymap.editor = "C:\\Program Files (x86)\\vim\\vim73\\gvim.exe"
 
     # --------------------------------------------------------------------
-    # 表示のカスタマイズ
-
-    # フォントの設定
-    keymap.setFont( "Consolas", 12 )
-
-    # テーマの設定
-    keymap.setTheme("black")
-
-    # --------------------------------------------------------------------
     # キーマップ
 
     keymap_global = keymap.defineWindowKeymap()
