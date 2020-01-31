@@ -81,28 +81,44 @@ def configure(keymap):
 
     # Spaceをモディファイアキーにする
     keymap.defineModifier( "Space", "User0" )
-    for modifier in [ "", "Alt-", "Ctrl-", "Shift-", "Win-" ]:
-        keymap_global[ modifier + "U0-H" ] = modifier + "Left"
-        keymap_global[ modifier + "U0-J" ] = modifier + "Down"
-        keymap_global[ modifier + "U0-K" ] = modifier + "Up"
-        keymap_global[ modifier + "U0-L" ] = modifier + "Right"
-        keymap_global[ modifier + "U0-E" ] = modifier + "Up"
-        keymap_global[ modifier + "U0-S" ] = modifier + "Left"
-        keymap_global[ modifier + "U0-D" ] = modifier + "Down"
-        keymap_global[ modifier + "U0-F" ] = modifier + "Right"
-        keymap_global[ modifier + "U0-U" ] = modifier + "Home"
-        keymap_global[ modifier + "U0-O" ] = modifier + "End"
-        keymap_global[ modifier + "U0-N" ] = modifier + "End"
-        keymap_global[ modifier + "U0-B" ] = modifier + "Space"
-        keymap_global[ modifier + "U0-Q" ] = modifier + "Esc"
-        keymap_global[ modifier + "U0-P" ] = modifier + "Enter"
-        keymap_global[ modifier + "U0-T" ] = modifier + "Enter"
-        keymap_global[ modifier + "U0-W" ] = modifier + "PageUp"
-        keymap_global[ modifier + "U0-R" ] = modifier + "PageDown"
-        keymap_global[ modifier + "U0-Semicolon" ] = modifier + "Minus"
 
     # Spaceをワンショットモディファイアにする
     keymap_global[ "O-Space" ] = "Space"
+
+    # Spaceを使ったキーマップ
+    for modifier in ['', 'Alt-', 'Ctrl-', 'Shift-', 'Win-']:
+        # 右手
+        keymap_global[modifier + 'U0-H'] = modifier + 'Left'
+        keymap_global[modifier + 'U0-J'] = modifier + 'Down'
+        keymap_global[modifier + 'U0-K'] = modifier + 'Up'
+        keymap_global[modifier + 'U0-L'] = modifier + 'Right'
+        keymap_global[modifier + 'U0-U'] = modifier + 'Home'
+        keymap_global[modifier + 'U0-O'] = modifier + 'End'
+        keymap_global[modifier + 'U0-P'] = modifier + 'Enter'
+        keymap_global[modifier + 'U0-Y'] = modifier + 'Esc'
+
+        # 左手
+        keymap_global[modifier + 'U0-E'] = modifier + 'Up'
+        keymap_global[modifier + 'U0-S'] = modifier + 'Left'
+        keymap_global[modifier + 'U0-D'] = modifier + 'Down'
+        keymap_global[modifier + 'U0-F'] = modifier + 'Right'
+        keymap_global[modifier + 'U0-A'] = modifier + 'Home'
+        keymap_global[modifier + 'U0-G'] = modifier + 'End'
+        keymap_global[modifier + 'U0-W'] = modifier + 'PageUp'
+        keymap_global[modifier + 'U0-R'] = modifier + 'PageDown'
+        keymap_global[modifier + 'U0-T'] = modifier + 'Enter'
+        keymap_global[modifier + 'U0-Q'] = modifier + 'Esc'
+
+        # 文字削除
+        keymap_global[modifier + 'U0-Tab'] = modifier + 'Back'
+        keymap_global[modifier + 'U0-Atmark'] = modifier + 'Delete'
+
+        # Space
+        keymap_global[modifier + 'U0-B'] = modifier + 'Space'
+
+        # ファンクションキー
+        for i, key in enumerate(list(range(1, 10)) + [0, 'Minus', 'Caret'], start=1):
+            keymap_global[f"{modifier}U0-{key}"] = f"{modifier}F{i}"
 
     # --------------------------------------------------------------------
     # CapsLock
