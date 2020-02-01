@@ -144,7 +144,10 @@ def configure(keymap):
     # Firefox
     keymap_firefox = keymap.defineWindowKeymap( exe_name="firefox.exe" )
     keymap_firefox[ "U0-I" ] = "Ctrl-L"
-    keymap_firefox[ "U0-Z" ] = "Ctrl-W"
+    keymap_firefox[ "U0-Z" ] = "Ctrl-T"
+    keymap_firefox[ "U0-X" ] = "Ctrl-W"
+    keymap_firefox[ "U0-C" ] = "Ctrl-PageUp"
+    keymap_firefox[ "U0-V" ] = "Ctrl-PageDown"
 
     # Console
     keymap_console = keymap.defineWindowKeymap( exe_name="Console.exe" )
