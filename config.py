@@ -164,7 +164,8 @@ def configure(keymap):
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
-    keymap_vlc['U0-Z'] = 'Alt-Ctrl-Left'
-    keymap_vlc['U0-X'] = 'Alt-Ctrl-Right'
+    keymap_vlc['U0-Z'] = 'Ctrl-J'
     keymap_vlc['U0-C'] = 'Ctrl-Left'
     keymap_vlc['U0-V'] = 'Ctrl-Right'
+    keymap_vlc['U0-M'] = 'Alt-Ctrl-Left'
+    keymap_vlc['U0-Comma'] = 'Alt-Ctrl-Right'
