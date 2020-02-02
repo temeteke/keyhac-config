@@ -68,64 +68,82 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
 
     # --------------------------------------------------------------------
-    # Space
+    # Space, 変換/無変換
 
-    # Spaceをモディファイアキーにする
-    keymap.defineModifier( "Space", "User0" )
+    keymap.defineModifier('Space', 'User0')
+    keymap.defineModifier(29, 'LUser1') # 無変換
+    keymap.defineModifier(28, 'RUser1') # 変換
 
-    # Spaceをワンショットモディファイアにする
-    keymap_global[ "O-Space" ] = "Space"
+    # ワンショット
+    keymap_global['O-Space'] = 'Space'
+    keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
+    keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
 
-    # Spaceを使ったキーマップ
-    for modifier in ['', 'Alt-', 'Ctrl-', 'Shift-', 'Win-']:
-        # 右手
-        keymap_global[modifier + 'U0-H'] = modifier + 'Left'
-        keymap_global[modifier + 'U0-J'] = modifier + 'Down'
-        keymap_global[modifier + 'U0-K'] = modifier + 'Up'
-        keymap_global[modifier + 'U0-L'] = modifier + 'Right'
-        keymap_global[modifier + 'U0-U'] = modifier + 'Home'
-        keymap_global[modifier + 'U0-O'] = modifier + 'End'
-        keymap_global[modifier + 'U0-P'] = modifier + 'Enter'
-        keymap_global[modifier + 'U0-Y'] = modifier + 'Esc'
+    # キー変換
+    for mod_key in ['', 'Alt-', 'Ctrl-', 'Shift-', 'Win-']:
 
-        # 左手
-        keymap_global[modifier + 'U0-E'] = modifier + 'Up'
-        keymap_global[modifier + 'U0-S'] = modifier + 'Left'
-        keymap_global[modifier + 'U0-D'] = modifier + 'Down'
-        keymap_global[modifier + 'U0-F'] = modifier + 'Right'
-        keymap_global[modifier + 'U0-A'] = modifier + 'Home'
-        keymap_global[modifier + 'U0-G'] = modifier + 'End'
-        keymap_global[modifier + 'U0-W'] = modifier + 'PageUp'
-        keymap_global[modifier + 'U0-R'] = modifier + 'PageDown'
-        keymap_global[modifier + 'U0-T'] = modifier + 'Enter'
-        keymap_global[modifier + 'U0-Q'] = modifier + 'Esc'
+        # 共通
+        for user_mod_key in ['User0-', 'User1-']:
+            # Space
+            keymap_global[mod_key + user_mod_key + 'B'] = mod_key + 'Space'
 
-        # 文字削除
-        keymap_global[modifier + 'U0-Tab'] = modifier + 'Back'
-        keymap_global[modifier + 'U0-Atmark'] = modifier + 'Delete'
+            # 右手
+            keymap_global[mod_key + user_mod_key + 'H'] = mod_key + 'Left'
+            keymap_global[mod_key + user_mod_key + 'J'] = mod_key + 'Down'
+            keymap_global[mod_key + user_mod_key + 'K'] = mod_key + 'Up'
+            keymap_global[mod_key + user_mod_key + 'L'] = mod_key + 'Right'
+            keymap_global[mod_key + user_mod_key + 'U'] = mod_key + 'Home'
+            keymap_global[mod_key + user_mod_key + 'O'] = mod_key + 'End'
+            keymap_global[mod_key + user_mod_key + 'P'] = mod_key + 'Enter'
+            keymap_global[mod_key + user_mod_key + 'Y'] = mod_key + 'Esc'
 
-        # Space
-        keymap_global[modifier + 'U0-B'] = modifier + 'Space'
+            # 左手
+            keymap_global[mod_key + user_mod_key + 'E'] = mod_key + 'Up'
+            keymap_global[mod_key + user_mod_key + 'S'] = mod_key + 'Left'
+            keymap_global[mod_key + user_mod_key + 'D'] = mod_key + 'Down'
+            keymap_global[mod_key + user_mod_key + 'F'] = mod_key + 'Right'
+            keymap_global[mod_key + user_mod_key + 'A'] = mod_key + 'Home'
+            keymap_global[mod_key + user_mod_key + 'G'] = mod_key + 'End'
+            keymap_global[mod_key + user_mod_key + 'W'] = mod_key + 'PageUp'
+            keymap_global[mod_key + user_mod_key + 'R'] = mod_key + 'PageDown'
+            keymap_global[mod_key + user_mod_key + 'T'] = mod_key + 'Enter'
+            keymap_global[mod_key + user_mod_key + 'Q'] = mod_key + 'Esc'
 
-        # ファンクションキー
-        for i, key in enumerate(list(range(1, 10)) + [0, 'Minus', 'Caret'], start=1):
-            keymap_global[f"{modifier}U0-{key}"] = f"{modifier}F{i}"
+            # 文字削除
+            keymap_global[mod_key + user_mod_key + 'Tab'] = mod_key + 'Back'
+            keymap_global[mod_key + user_mod_key + 'Atmark'] = mod_key + 'Delete'
+
+            # ファンクションキー
+            for i, key in enumerate([str(x) for x in range(1, 10)] + ['0', 'Minus', 'Caret'], start=1):
+                keymap_global[mod_key + user_mod_key + key] = mod_key + 'F' + str(i)
+
+        # 変換/無変換 一部上書き
+        keymap_global[mod_key + 'User1-H'] = mod_key + 'Back'
+        keymap_global[mod_key + 'User1-J'] = mod_key + 'PageDown'
+        keymap_global[mod_key + 'User1-K'] = mod_key + 'PageUp'
+        keymap_global[mod_key + 'User1-L'] = mod_key + 'Delete'
+
+    # マクロ
+    keymap_global['User1-U'] = 'Shift-Home', 'Delete'
+    keymap_global['User1-O'] = 'Shift-End', 'Delete'
+
+
 
     # --------------------------------------------------------------------
     # CapsLock
 
-    # ユーザモディファイアキーの定義：CapsLock(240) --> U1
-    keymap.defineModifier("(240)", "U1")
+    # ユーザモディファイアキーの定義：CapsLock(240) --> U3
+    keymap.defineModifier("(240)", "U3")
 
     # 単体押しは一定時間後にモディファイアの状態をリセット
     # keymap_global["U1"] = auto_reset_modifier     # これだとキー表記エラー
     keymap_global["(240)"] = auto_reset_modifier
 
     for c in [chr(i) for i in range(65, 91)]:
-        keymap_global[ "U1-" + c ] = reset_modifier(keymap.InputKeyCommand("RC-" + c))
+        keymap_global[ "U3-" + c ] = reset_modifier(keymap.InputKeyCommand("RC-" + c))
 
     def set_key_for_capslock(key, command, keymaps=keymap_global):
-        keymaps[ "U1-" + key] = reset_modifier(keymap.InputKeyCommand(command))
+        keymaps[ "U3-" + key] = reset_modifier(keymap.InputKeyCommand(command))
         keymaps[ "RC-" + key] = command
 
     # CapsLockのキーマップ
