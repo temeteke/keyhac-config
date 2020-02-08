@@ -102,15 +102,13 @@ def configure(keymap):
 
     # Console
     keymap_console = keymap.defineWindowKeymap(exe_name='Console.exe')
-    keymap_console['Ctrl-V'] = 'Shift-Insert'
     keymap_console['User0-V'] = 'Shift-Insert'
-    keymap_console['User1-V'] = 'Ctrl-V'
+    keymap_console['User1-V'] = 'Shift-Insert'
 
     # mintty
     keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
-    keymap_mintty['Ctrl-V'] = 'Shift-Insert'
     keymap_mintty['User0-V'] = 'Shift-Insert'
-    keymap_mintty['User1-V'] = 'Ctrl-V'
+    keymap_mintty['User1-V'] = 'Shift-Insert'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
