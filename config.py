@@ -78,6 +78,8 @@ def configure(keymap):
         keymap_global[mod_key + 'User1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'User1-K'] = mod_key + 'PageUp'
         keymap_global[mod_key + 'User1-L'] = mod_key + 'Delete'
+        keymap_global[mod_key + 'User1-S'] = mod_key + 'Back'
+        keymap_global[mod_key + 'User1-F'] = mod_key + 'Delete'
 
     # マクロ
     keymap_global['User1-U'] = 'Shift-Home', 'Delete'
