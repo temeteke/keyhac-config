@@ -6,6 +6,8 @@ import itertools
 import pyauto
 from keyhac import *
 
+import string
+
 
 def configure(keymap):
     # --------------------------------------------------------------------
@@ -85,6 +87,16 @@ def configure(keymap):
     keymap_global['User1-U'] = 'Shift-Home', 'Delete'
     keymap_global['User1-O'] = 'Shift-End', 'Delete'
 
+    # --------------------------------------------------------------------
+    # フットスイッチ
+
+    keymap.defineModifier(124, 'LUser2')
+    keymap.defineModifier(125, 'User3')
+    keymap.defineModifier(126, 'RUser2')
+
+    for x in string.ascii_uppercase + string.digits:
+        keymap_global['User2-' + x] = 'Shift-' + x
+
 
     # --------------------------------------------------------------------
     # アプリケーション別の設定
@@ -119,3 +131,6 @@ def configure(keymap):
     keymap_vlc['User0-V'] = 'Ctrl-Right'
     keymap_vlc['User0-M'] = 'Alt-Ctrl-Left'
     keymap_vlc['User0-Comma'] = 'Alt-Ctrl-Right'
+    keymap_vlc['O-(124)'] = 'Left'
+    keymap_vlc['O-(125)'] = 'Space'
+    keymap_vlc['O-(126)'] = 'Right'
