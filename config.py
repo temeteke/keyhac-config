@@ -90,12 +90,16 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # フットスイッチ
 
-    keymap.defineModifier(124, 'LUser2')
-    keymap.defineModifier(125, 'User3')
-    keymap.defineModifier(126, 'RUser2')
+    keymap.defineModifier(124, 'User2')
 
     for x in string.ascii_uppercase + string.digits:
         keymap_global['User2-' + x] = 'Shift-' + x
+
+    keymap_global['O-(124)'] = 'Esc'
+    keymap_global['(125)'] = 'Space'
+    keymap_global['(126)'] = 'Enter'
+    keymap_global['User2-(125)'] = 'Alt-Shift-Tab'
+    keymap_global['User2-(126)'] = 'Alt-Tab'
 
 
     # --------------------------------------------------------------------
@@ -131,6 +135,7 @@ def configure(keymap):
     keymap_vlc['User0-V'] = 'Ctrl-Right'
     keymap_vlc['User0-M'] = 'Alt-Ctrl-Left'
     keymap_vlc['User0-Comma'] = 'Alt-Ctrl-Right'
-    keymap_vlc['O-(124)'] = 'Left'
-    keymap_vlc['O-(125)'] = 'Space'
+    keymap_vlc['(125)'] = 'Space'
+    keymap_vlc['(126)'] = 'Space'
+    keymap_vlc['O-(125)'] = 'Left'
     keymap_vlc['O-(126)'] = 'Right'
