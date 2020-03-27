@@ -139,3 +139,8 @@ def configure(keymap):
     keymap_vlc['(126)'] = 'Space'
     keymap_vlc['O-(125)'] = 'Left'
     keymap_vlc['O-(126)'] = 'Right'
+
+    # Splashtop
+    keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
+    keymap_splashtop['O-(29)'] = '(29)'
+    keymap_splashtop['O-(28)'] = '(28)'
