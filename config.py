@@ -144,3 +144,8 @@ def configure(keymap):
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
     keymap_splashtop['O-(29)'] = '(29)'
     keymap_splashtop['O-(28)'] = '(28)'
+
+    # Minecraft
+    keymap_minecraft = keymap.defineWindowKeymap(exe_name='javaw.exe', window_text='Minecraft*')
+    keymap_minecraft['D-Space'] = 'D-Space'
+    keymap_minecraft['U-Space'] = 'U-Space'
