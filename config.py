@@ -149,3 +149,8 @@ def configure(keymap):
     keymap_minecraft = keymap.defineWindowKeymap(exe_name='javaw.exe', window_text='Minecraft*')
     keymap_minecraft['D-Space'] = 'D-Space'
     keymap_minecraft['U-Space'] = 'U-Space'
+
+    # Grand Theft Auto V
+    keymap_gta5 = keymap.defineWindowKeymap(exe_name='GTA5.exe')
+    keymap_gta5['D-Space'] = 'D-Space'
+    keymap_gta5['U-Space'] = 'U-Space'
