@@ -83,6 +83,9 @@ def configure(keymap):
         keymap_global[mod_key + 'User1-S'] = mod_key + 'Back'
         keymap_global[mod_key + 'User1-F'] = mod_key + 'Delete'
 
+    # ランチャー(PowerToys Run)
+    keymap_global['User0-Esc'] = 'Alt-Space'
+
     # マクロ
     keymap_global['User1-U'] = 'Shift-Home', 'Delete'
     keymap_global['User1-O'] = 'Shift-End', 'Delete'
