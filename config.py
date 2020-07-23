@@ -98,27 +98,30 @@ def configure(keymap):
 
     def mouse_move_between_monitor_command(monitor):
         def run():
-            monitor_info = sorted(pyauto.Window.getMonitorInfo())
             mouse_x, mouse_y = pyauto.Input.getCursorPos()
+            monitor_info = sorted(pyauto.Window.getMonitorInfo())
+            next_monitor = monitor % len(monitor_info)
 
             for i, v in enumerate(monitor_info):
                 if v[0][0] <= mouse_x < v[0][2]:
                     current_monitor = i
                     break
 
-            if monitor != current_monitor:
-                mouse_x = int(monitor_info[monitor][0][0] + (monitor_info[monitor][0][2] - monitor_info[monitor][0][0])/2)
-                mouse_y = min(mouse_y, monitor_info[monitor][0][3]-1)
-                Input.send([pyauto.MouseMove(mouse_x, mouse_y)])
+            if next_monitor != current_monitor:
+                monitor_width = monitor_info[next_monitor][0][2] - monitor_info[next_monitor][0][0]
+                monitor_height = monitor_info[next_monitor][0][3] - monitor_info[next_monitor][0][1]
+                current_monitor_width = monitor_info[current_monitor][0][2] - monitor_info[current_monitor][0][0]
+                current_monitor_height = monitor_info[current_monitor][0][3] - monitor_info[current_monitor][0][1]
+                mouse_x = int(monitor_info[next_monitor][0][0] + (mouse_x - monitor_info[current_monitor][0][0]) * monitor_width / current_monitor_width)
+                mouse_y = int(monitor_info[next_monitor][0][1] + (mouse_y - monitor_info[current_monitor][0][1]) * monitor_height / current_monitor_height)
+                Input.send([pyauto.MouseMove(mouse_x, 0), pyauto.MouseMove(mouse_x, mouse_y)]) # yが現在の画面の高さ以上の座標に移動するとxがおかしくなるので2段階に分けて移動する
 
             keymap.InputKeyCommand('Ctrl')()
 
         return run
 
-    keymap_global['User1-1'] = mouse_move_between_monitor_command(0)
-    keymap_global['User1-2'] = mouse_move_between_monitor_command(1)
-    keymap_global['User1-3'] = mouse_move_between_monitor_command(2)
-    keymap_global['User1-4'] = mouse_move_between_monitor_command(3)
+    for i in range(4):
+        keymap_global[f'User1-{i+1}'] = mouse_move_between_monitor_command(i)
 
     # --------------------------------------------------------------------
     # フットスイッチ
