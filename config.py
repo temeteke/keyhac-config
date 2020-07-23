@@ -80,8 +80,6 @@ def configure(keymap):
         keymap_global[mod_key + 'User1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'User1-K'] = mod_key + 'PageUp'
         keymap_global[mod_key + 'User1-L'] = mod_key + 'Delete'
-        keymap_global[mod_key + 'User1-S'] = mod_key + 'Back'
-        keymap_global[mod_key + 'User1-F'] = mod_key + 'Delete'
 
     # ランチャー(PowerToys Run)
     keymap_global['User0-Esc'] = 'Alt-Space'
@@ -89,6 +87,38 @@ def configure(keymap):
     # マクロ
     keymap_global['User1-U'] = 'Shift-Home', 'Delete'
     keymap_global['User1-O'] = 'Shift-End', 'Delete'
+
+    # モニター間の移動
+    keymap_global['User1-E'] = 'Win-Up'
+    keymap_global['User1-S'] = 'Win-Left'
+    keymap_global['User1-D'] = 'Win-Down'
+    keymap_global['User1-F'] = 'Win-Right'
+    keymap_global['User1-W'] = 'Win-Shift-Left'
+    keymap_global['User1-R'] = 'Win-Shift-Right'
+
+    def mouse_move_between_monitor_command(monitor):
+        def run():
+            monitor_info = sorted(pyauto.Window.getMonitorInfo())
+            mouse_x, mouse_y = pyauto.Input.getCursorPos()
+
+            for i, v in enumerate(monitor_info):
+                if v[0][0] <= mouse_x < v[0][2]:
+                    current_monitor = i
+                    break
+
+            if monitor != current_monitor:
+                mouse_x = int(monitor_info[monitor][0][0] + (monitor_info[monitor][0][2] - monitor_info[monitor][0][0])/2)
+                mouse_y = min(mouse_y, monitor_info[monitor][0][3]-1)
+                Input.send([pyauto.MouseMove(mouse_x, mouse_y)])
+
+            keymap.InputKeyCommand('Ctrl')()
+
+        return run
+
+    keymap_global['User1-Z'] = mouse_move_between_monitor_command(0)
+    keymap_global['User1-X'] = mouse_move_between_monitor_command(1)
+    keymap_global['User1-C'] = mouse_move_between_monitor_command(2)
+    keymap_global['User1-V'] = mouse_move_between_monitor_command(3)
 
     # --------------------------------------------------------------------
     # フットスイッチ
