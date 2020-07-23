@@ -115,10 +115,10 @@ def configure(keymap):
 
         return run
 
-    keymap_global['User1-Z'] = mouse_move_between_monitor_command(0)
-    keymap_global['User1-X'] = mouse_move_between_monitor_command(1)
-    keymap_global['User1-C'] = mouse_move_between_monitor_command(2)
-    keymap_global['User1-V'] = mouse_move_between_monitor_command(3)
+    keymap_global['User1-1'] = mouse_move_between_monitor_command(0)
+    keymap_global['User1-2'] = mouse_move_between_monitor_command(1)
+    keymap_global['User1-3'] = mouse_move_between_monitor_command(2)
+    keymap_global['User1-4'] = mouse_move_between_monitor_command(3)
 
     # --------------------------------------------------------------------
     # フットスイッチ
