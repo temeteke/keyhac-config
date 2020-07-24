@@ -137,6 +137,18 @@ def configure(keymap):
     keymap_global['User2-(125)'] = 'Alt-Shift-Tab'
     keymap_global['User2-(126)'] = 'Alt-Tab'
 
+    # テンキーのNumLock
+    keymap_global['User2-Num0'] = 'Insert'
+    keymap_global['User2-Num1'] = 'End'
+    keymap_global['User2-Num2'] = 'Down'
+    keymap_global['User2-Num3'] = 'PageDown'
+    keymap_global['User2-Num4'] = 'Left'
+    keymap_global['User2-Num5'] = 'Space'
+    keymap_global['User2-Num6'] = 'Right'
+    keymap_global['User2-Num7'] = 'Home'
+    keymap_global['User2-Num8'] = 'Up'
+    keymap_global['User2-Num9'] = 'PageUp'
+
 
     # --------------------------------------------------------------------
     # アプリケーション別の設定
