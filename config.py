@@ -134,8 +134,8 @@ def configure(keymap):
     keymap_global['O-(124)'] = 'Esc'
     keymap_global['(125)'] = 'Space'
     keymap_global['(126)'] = 'Enter'
-    keymap_global['User2-(125)'] = 'Alt-Shift-Tab'
-    keymap_global['User2-(126)'] = 'Alt-Tab'
+    keymap_global['User2-(125)'] = '(127)'
+    keymap_global['User2-(126)'] = '(128)'
 
     # テンキーのNumLock
     keymap_global['User2-Num0'] = 'Insert'
