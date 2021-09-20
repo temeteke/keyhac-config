@@ -32,7 +32,7 @@ def configure(keymap):
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
 
-    mod_keys = ['Alt-', 'Ctrl-', 'Shift-', 'Win-']
+    mod_keys = ['A-', 'C-', 'S-', 'W-']
     mod_keys_combs = []
     for i in range(len(mod_keys)+1):
         mod_keys_combs += [''.join(x) for x in itertools.combinations(mod_keys, i)]
@@ -41,7 +41,7 @@ def configure(keymap):
     for mod_key in mod_keys_combs:
 
         # 共通
-        for user_mod_key in ['User0-', 'User1-']:
+        for user_mod_key in ['U0-', 'U1-']:
             # Space
             keymap_global[mod_key + user_mod_key + 'B'] = mod_key + 'Space'
 
@@ -76,25 +76,25 @@ def configure(keymap):
                 keymap_global[mod_key + user_mod_key + key] = mod_key + 'F' + str(i)
 
         # 変換/無変換 一部上書き
-        keymap_global[mod_key + 'User1-H'] = mod_key + 'Back'
-        keymap_global[mod_key + 'User1-J'] = mod_key + 'PageDown'
-        keymap_global[mod_key + 'User1-K'] = mod_key + 'PageUp'
-        keymap_global[mod_key + 'User1-L'] = mod_key + 'Delete'
+        keymap_global[mod_key + 'U1-H'] = mod_key + 'Back'
+        keymap_global[mod_key + 'U1-J'] = mod_key + 'PageDown'
+        keymap_global[mod_key + 'U1-K'] = mod_key + 'PageUp'
+        keymap_global[mod_key + 'U1-L'] = mod_key + 'Delete'
 
     # ランチャー(PowerToys Run)
-    keymap_global['User0-Esc'] = 'Alt-Space'
+    keymap_global['U0-Esc'] = 'A-Space'
 
     # マクロ
-    keymap_global['User1-U'] = 'Shift-Home', 'Delete'
-    keymap_global['User1-O'] = 'Shift-End', 'Delete'
+    keymap_global['U1-U'] = 'S-Home', 'Delete'
+    keymap_global['U1-O'] = 'S-End', 'Delete'
 
     # モニター間の移動
-    keymap_global['User1-E'] = 'Win-Up'
-    keymap_global['User1-S'] = 'Win-Left'
-    keymap_global['User1-D'] = 'Win-Down'
-    keymap_global['User1-F'] = 'Win-Right'
-    keymap_global['User1-W'] = 'Win-Shift-Left'
-    keymap_global['User1-R'] = 'Win-Shift-Right'
+    keymap_global['U1-E'] = 'W-Up'
+    keymap_global['U1-S'] = 'W-Left'
+    keymap_global['U1-D'] = 'W-Down'
+    keymap_global['U1-F'] = 'W-Right'
+    keymap_global['U1-W'] = 'W-S-Left'
+    keymap_global['U1-R'] = 'W-S-Right'
 
     def mouse_move_between_monitor_command(monitor):
         def run():
@@ -121,7 +121,7 @@ def configure(keymap):
         return run
 
     for i in range(4):
-        keymap_global[f'User1-{i+1}'] = mouse_move_between_monitor_command(i)
+        keymap_global[f'U1-{i+1}'] = mouse_move_between_monitor_command(i)
 
     # --------------------------------------------------------------------
     # フットスイッチ
@@ -130,24 +130,24 @@ def configure(keymap):
     keymap.defineModifier(126, 'RUser2') # 右
 
     for x in string.ascii_uppercase + string.digits:
-        keymap_global['User2-' + x] = 'Shift-' + x
+        keymap_global['U2-' + x] = 'S-' + x
 
     keymap_global['O-(124)'] = 'Esc'
     keymap_global['(125)'] = 'Space'
     keymap_global['O-(126)'] = 'Enter'
-    keymap_global['User2-(125)'] = '(127)'
+    keymap_global['U2-(125)'] = '(127)'
 
     # テンキーのNumLock
-    keymap_global['User2-Num0'] = 'Insert'
-    keymap_global['User2-Num1'] = 'End'
-    keymap_global['User2-Num2'] = 'Down'
-    keymap_global['User2-Num3'] = 'PageDown'
-    keymap_global['User2-Num4'] = 'Left'
-    keymap_global['User2-Num5'] = 'Space'
-    keymap_global['User2-Num6'] = 'Right'
-    keymap_global['User2-Num7'] = 'Home'
-    keymap_global['User2-Num8'] = 'Up'
-    keymap_global['User2-Num9'] = 'PageUp'
+    keymap_global['U2-Num0'] = 'Insert'
+    keymap_global['U2-Num1'] = 'End'
+    keymap_global['U2-Num2'] = 'Down'
+    keymap_global['U2-Num3'] = 'PageDown'
+    keymap_global['U2-Num4'] = 'Left'
+    keymap_global['U2-Num5'] = 'Space'
+    keymap_global['U2-Num6'] = 'Right'
+    keymap_global['U2-Num7'] = 'Home'
+    keymap_global['U2-Num8'] = 'Up'
+    keymap_global['U2-Num9'] = 'PageUp'
 
 
     # --------------------------------------------------------------------
@@ -165,25 +165,25 @@ def configure(keymap):
             return False
 
     keymap_browser = keymap.defineWindowKeymap(check_func=is_browser)
-    keymap_browser['User0-Z'] = 'Ctrl-Shift-T'
-    keymap_browser['User0-X'] = 'Ctrl-W'
-    keymap_browser['User0-C'] = 'Ctrl-PageUp'
-    keymap_browser['User0-V'] = 'Ctrl-PageDown'
-    keymap_browser['User0-N'] = 'Ctrl-T'
-    keymap_browser['User0-I'] = 'Ctrl-L'
+    keymap_browser['U0-Z'] = 'C-S-T'
+    keymap_browser['U0-X'] = 'C-W'
+    keymap_browser['U0-C'] = 'C-PageUp'
+    keymap_browser['U0-V'] = 'C-PageDown'
+    keymap_browser['U0-N'] = 'C-T'
+    keymap_browser['U0-I'] = 'C-L'
 
     # mintty
     keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
-    keymap_mintty['User0-V'] = 'Shift-Insert'
-    keymap_mintty['User1-V'] = 'Shift-Insert'
+    keymap_mintty['U0-V'] = 'S-Insert'
+    keymap_mintty['U1-V'] = 'S-Insert'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
-    keymap_vlc['User0-Z'] = 'Ctrl-J'
-    keymap_vlc['User0-C'] = 'Ctrl-Left'
-    keymap_vlc['User0-V'] = 'Ctrl-Right'
-    keymap_vlc['User0-M'] = 'Alt-Ctrl-Left'
-    keymap_vlc['User0-Comma'] = 'Alt-Ctrl-Right'
+    keymap_vlc['U0-Z'] = 'C-J'
+    keymap_vlc['U0-C'] = 'C-Left'
+    keymap_vlc['U0-V'] = 'C-Right'
+    keymap_vlc['U0-M'] = 'A-C-Left'
+    keymap_vlc['U0-Comma'] = 'A-C-Right'
     keymap_vlc['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
     keymap_vlc['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
     keymap_vlc['D-(124)'] = 'Left'  #押された瞬間に入力する
@@ -212,8 +212,8 @@ def configure(keymap):
     # Fusion 360
     keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
     keymap_fusion360['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
-    keymap_fusion360['D-(124)'] = 'D-Shift-MButton'
-    keymap_fusion360['U-(124)'] = 'U-Shift-MButton'
+    keymap_fusion360['D-(124)'] = 'D-S-MButton'
+    keymap_fusion360['U-(124)'] = 'U-S-MButton'
     keymap_fusion360['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
     keymap_fusion360['D-(126)'] = 'D-MButton'
     keymap_fusion360['U-(126)'] = 'U-MButton'
