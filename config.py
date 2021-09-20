@@ -126,16 +126,16 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # フットスイッチ
 
-    keymap.defineModifier(124, 'User2')
+    keymap.defineModifier(124, 'LUser2') # 左
+    keymap.defineModifier(126, 'RUser2') # 右
 
     for x in string.ascii_uppercase + string.digits:
         keymap_global['User2-' + x] = 'Shift-' + x
 
     keymap_global['O-(124)'] = 'Esc'
     keymap_global['(125)'] = 'Space'
-    keymap_global['(126)'] = 'Enter'
+    keymap_global['O-(126)'] = 'Enter'
     keymap_global['User2-(125)'] = '(127)'
-    keymap_global['User2-(126)'] = '(128)'
 
     # テンキーのNumLock
     keymap_global['User2-Num0'] = 'Insert'
@@ -183,10 +183,14 @@ def configure(keymap):
     keymap_vlc['User0-V'] = 'Ctrl-Right'
     keymap_vlc['User0-M'] = 'Alt-Ctrl-Left'
     keymap_vlc['User0-Comma'] = 'Alt-Ctrl-Right'
-    keymap_vlc['(125)'] = 'Space'
-    keymap_vlc['(126)'] = 'Space'
-    keymap_vlc['O-(125)'] = 'Left'
-    keymap_vlc['O-(126)'] = 'Right'
+    keymap_vlc['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_vlc['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_vlc['D-(124)'] = 'Left'  #押された瞬間に入力する
+    keymap_vlc['D-(126)'] = 'Right' #押された瞬間に入力する
+    keymap_vlc['D-LU2-(124)'] = 'Left'  #押されている間ずっと入力する
+    keymap_vlc['D-RU2-(126)'] = 'Right' #押されている間ずっと入力する
+    keymap_vlc['D-(125)'] = lambda: None #長押ししても入力しない
+    keymap_vlc['U-(125)'] = 'Space' #離したときに入力する
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
@@ -194,6 +198,7 @@ def configure(keymap):
     keymap_splashtop['O-(28)'] = '(28)'
 
     # Minecraft
+    #ワンショットモディファイアの無効化と押されているときにずっと入力する様にした方がいいかも?
     keymap_minecraft = keymap.defineWindowKeymap(exe_name='javaw.exe', window_text='Minecraft*')
     keymap_minecraft['D-Space'] = 'D-Space'
     keymap_minecraft['U-Space'] = 'U-Space'
@@ -202,3 +207,21 @@ def configure(keymap):
     keymap_gta5 = keymap.defineWindowKeymap(exe_name='GTA5.exe')
     keymap_gta5['D-Space'] = 'D-Space'
     keymap_gta5['U-Space'] = 'U-Space'
+
+    # Fusion 360
+    keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
+    keymap_fusion360['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_fusion360['D-(124)'] = 'D-Shift-MButton'
+    keymap_fusion360['U-(124)'] = 'U-Shift-MButton'
+    keymap_fusion360['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_fusion360['D-(126)'] = 'D-MButton'
+    keymap_fusion360['U-(126)'] = 'U-MButton'
+
+    # Cura
+    keymap_cura = keymap.defineWindowKeymap(exe_name='Cura.exe')
+    keymap_cura['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_cura['D-(124)'] = 'D-RButton'
+    keymap_cura['U-(124)'] = 'U-RButton'
+    keymap_cura['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_cura['D-(126)'] = 'D-MButton'
+    keymap_cura['U-(126)'] = 'U-MButton'
