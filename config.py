@@ -190,8 +190,8 @@ def configure(keymap):
     keymap_vlc['D-(126)'] = 'Right' #押された瞬間に入力する
     keymap_vlc['D-LU2-(124)'] = 'Left'  #押されている間ずっと入力する
     keymap_vlc['D-RU2-(126)'] = 'Right' #押されている間ずっと入力する
-    keymap_vlc['D-(125)'] = lambda: None #長押ししても入力しない
-    keymap_vlc['U-(125)'] = 'Space' #離したときに入力する
+    keymap_vlc['D-(125)'] = lambda: None #長押しされても入力しない
+    keymap_vlc['U-(125)'] = 'Space' #離されたときに入力する
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
