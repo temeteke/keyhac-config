@@ -172,11 +172,6 @@ def configure(keymap):
     keymap_browser['User0-N'] = 'Ctrl-T'
     keymap_browser['User0-I'] = 'Ctrl-L'
 
-    # Console
-    keymap_console = keymap.defineWindowKeymap(exe_name='Console.exe')
-    keymap_console['User0-V'] = 'Shift-Insert'
-    keymap_console['User1-V'] = 'Shift-Insert'
-
     # mintty
     keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
     keymap_mintty['User0-V'] = 'Shift-Insert'
