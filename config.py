@@ -157,14 +157,20 @@ def configure(keymap):
     keymap_explorer = keymap.defineWindowKeymap(exe_name='explorer.exe')
     keymap_explorer['U0-I'] = 'F2'
 
-    # Firefox
-    keymap_firefox = keymap.defineWindowKeymap(exe_name='firefox.exe')
-    keymap_firefox['User0-Z'] = 'Ctrl-Shift-T'
-    keymap_firefox['User0-X'] = 'Ctrl-W'
-    keymap_firefox['User0-C'] = 'Ctrl-PageUp'
-    keymap_firefox['User0-V'] = 'Ctrl-PageDown'
-    keymap_firefox['User0-N'] = 'Ctrl-T'
-    keymap_firefox['User0-I'] = 'Ctrl-L'
+    # ブラウザ
+    def is_browser(window):
+        if window.getProcessName() in ('firefox.exe', 'chrome.exe', 'msedge.exe'):
+            return True
+        else:
+            return False
+
+    keymap_browser = keymap.defineWindowKeymap(check_func=is_browser)
+    keymap_browser['User0-Z'] = 'Ctrl-Shift-T'
+    keymap_browser['User0-X'] = 'Ctrl-W'
+    keymap_browser['User0-C'] = 'Ctrl-PageUp'
+    keymap_browser['User0-V'] = 'Ctrl-PageDown'
+    keymap_browser['User0-N'] = 'Ctrl-T'
+    keymap_browser['User0-I'] = 'Ctrl-L'
 
     # Console
     keymap_console = keymap.defineWindowKeymap(exe_name='Console.exe')
