@@ -123,6 +123,10 @@ def configure(keymap):
     for i in range(4):
         keymap_global[f'U1-{i+1}'] = mouse_move_between_monitor_command(i)
 
+    # クリップボードの履歴
+    keymap_global['U0-V'] = 'W-V'
+    keymap_global['U1-V'] = 'W-V'
+
     # --------------------------------------------------------------------
     # フットスイッチ
 
@@ -175,7 +179,6 @@ def configure(keymap):
     # mintty
     keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
     keymap_mintty['U0-V'] = 'S-Insert'
-    keymap_mintty['U1-V'] = 'S-Insert'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
