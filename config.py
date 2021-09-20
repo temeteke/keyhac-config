@@ -159,6 +159,11 @@ def configure(keymap):
 
     # Explorer
     keymap_explorer = keymap.defineWindowKeymap(exe_name='explorer.exe')
+    keymap_explorer['U0-Z'] = 'A-Up'
+    keymap_explorer['U0-X'] = 'C-W'
+    keymap_explorer['U0-M'] = 'A-Left'
+    keymap_explorer['U0-Comma'] = 'A-Right'
+    keymap_explorer['U0-Period'] = 'C-R'
     keymap_explorer['U0-I'] = 'F2'
 
     # ブラウザ
@@ -174,6 +179,9 @@ def configure(keymap):
     keymap_browser['U0-C'] = 'C-PageUp'
     keymap_browser['U0-V'] = 'C-PageDown'
     keymap_browser['U0-N'] = 'C-T'
+    keymap_browser['U0-M'] = 'A-Left'
+    keymap_browser['U0-Comma'] = 'A-Right'
+    keymap_browser['U0-Period'] = 'C-R'
     keymap_browser['U0-I'] = 'C-L'
 
     # mintty
@@ -185,8 +193,10 @@ def configure(keymap):
     keymap_vlc['U0-Z'] = 'C-J'
     keymap_vlc['U0-C'] = 'C-Left'
     keymap_vlc['U0-V'] = 'C-Right'
-    keymap_vlc['U0-M'] = 'A-C-Left'
-    keymap_vlc['U0-Comma'] = 'A-C-Right'
+    keymap_vlc['U0-M'] = 'OpenBracket'
+    keymap_vlc['U0-Comma'] = 'CloseBracket'
+    keymap_vlc['U0-Period'] = 'A-C-Left'
+    keymap_vlc['U0-Slash'] = 'A-C-Right'
     keymap_vlc['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
     keymap_vlc['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
     keymap_vlc['D-(124)'] = 'Left'  #押された瞬間に入力する
