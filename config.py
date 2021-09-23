@@ -133,6 +133,13 @@ def configure(keymap):
     keymap_global['U0-V'] = 'W-V'
     keymap_global['U1-V'] = 'W-V'
 
+    # 日時入力
+    keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap('日時')
+    keymap_global['U0-Semicolon']['Semicolon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y/%m/%d'))()
+    keymap_global['U0-Semicolon']['Colon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H:%M:%S'))()
+    keymap_global['U0-Semicolon']['J'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y%m%d'))()
+    keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
+
     # --------------------------------------------------------------------
     # フットスイッチ
 
