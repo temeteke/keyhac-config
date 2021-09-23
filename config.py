@@ -84,7 +84,7 @@ def configure(keymap):
         keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
     # ランチャー(PowerToys Run)
-    keymap_global['U0-Esc'] = 'A-Space'
+    keymap_global['O-U0-LCtrl'] = 'A-Space'
 
     # マクロ
     keymap_global['U1-U'] = 'S-Home', 'Delete'
