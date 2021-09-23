@@ -80,6 +80,8 @@ def configure(keymap):
         keymap_global[mod_key + 'U1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'U1-K'] = mod_key + 'PageUp'
         keymap_global[mod_key + 'U1-L'] = mod_key + 'Delete'
+        keymap_global[mod_key + 'U1-Tab'] = mod_key + 'Delete'
+        keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
     # ランチャー(PowerToys Run)
     keymap_global['U0-Esc'] = 'A-Space'
