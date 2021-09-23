@@ -172,6 +172,16 @@ def configure(keymap):
     keymap_global['U0-Semicolon']['J'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y%m%d'))()
     keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
 
+    # 括弧の入力
+    keymap_global['U1-S-8'] = 'S-8', 'S-9', 'Left'
+    keymap_global['U1-S-9'] = 'S-8', 'S-9', 'Left'
+    keymap_global['U1-OpenBracket']  = 'OpenBracket', 'CloseBracket', 'Left'
+    keymap_global['U1-CloseBracket'] = 'OpenBracket', 'CloseBracket', 'Left'
+    keymap_global['U1-S-OpenBracket']  = 'S-OpenBracket', 'S-CloseBracket', 'Left'
+    keymap_global['U1-S-CloseBracket'] = 'S-OpenBracket', 'S-CloseBracket', 'Left'
+    keymap_global['U1-S-Comma']  = 'S-Comma', 'S-Period', 'Left'
+    keymap_global['U1-S-Period'] = 'S-Comma', 'S-Period', 'Left'
+
     # --------------------------------------------------------------------
     # フットスイッチ
 
