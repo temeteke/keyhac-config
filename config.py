@@ -129,9 +129,13 @@ def configure(keymap):
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
 
-    # クリップボードの履歴
-    keymap_global['U0-V'] = 'W-V'
-    keymap_global['U1-V'] = 'W-V'
+    # クリップボード
+    def paste_clipboard_text():
+        keymap.wnd.setImeStatus(0) # IMEオフにする
+        keymap.InputTextCommand(getClipboardText().strip())()
+
+    keymap_global['U0-V'] = lambda: paste_clipboard_text()  # プレーンテキストとして貼り付け
+    keymap_global['U1-V'] = 'W-V' # クリップボードの履歴を表示
 
     # 日時入力
     keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap('日時')
@@ -199,10 +203,6 @@ def configure(keymap):
     keymap_browser['U0-Comma'] = 'A-Right'
     keymap_browser['U0-Period'] = 'C-R'
     keymap_browser['U0-I'] = 'C-L'
-
-    # mintty
-    keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
-    keymap_mintty['U0-V'] = 'S-Insert'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
