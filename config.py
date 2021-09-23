@@ -27,8 +27,6 @@ def configure(keymap):
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
 
-    # ワンショット
-    keymap_global['O-Space'] = 'Space'
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
 
@@ -39,6 +37,8 @@ def configure(keymap):
 
     # キー変換
     for mod_key in mod_keys_combs:
+        # ワンショット
+        keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
 
         # 共通
         for user_mod_key in ['U0-', 'U1-']:
