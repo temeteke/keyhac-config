@@ -2,18 +2,21 @@ import sys
 import os
 import datetime
 import itertools
+import string
 
 import pyauto
 from keyhac import *
 
-import string
-
 
 def configure(keymap):
     # --------------------------------------------------------------------
-    # config.py編集用のテキストエディタの設定
+    # 定数の定義
 
-    keymap.editor = "C:\\Program Files (x86)\\vim\\vim73\\gvim.exe"
+    # 標準のモディファイアキーの組み合わせ
+    MOD_KEYS = ['A-', 'C-', 'S-', 'W-']
+    MOD_KEYS_COMBS = []
+    for i in range(len(MOD_KEYS)+1):
+        MOD_KEYS_COMBS += [''.join(x) for x in itertools.combinations(MOD_KEYS, i)]
 
     # --------------------------------------------------------------------
     # キーマップ
@@ -21,29 +24,29 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
 
     # --------------------------------------------------------------------
-    # Space, 変換/無変換
+    # スペース, 変換/無変換
 
+    # ユーザモディファイアキーの定義
     keymap.defineModifier('Space', 'User0')
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
 
+    # 変換/無変換でIMEを切替
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
 
-    mod_keys = ['A-', 'C-', 'S-', 'W-']
-    mod_keys_combs = []
-    for i in range(len(mod_keys)+1):
-        mod_keys_combs += [''.join(x) for x in itertools.combinations(mod_keys, i)]
-
-    # キー変換
-    for mod_key in mod_keys_combs:
+    for mod_key in MOD_KEYS_COMBS:
         # ワンショット
         keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
 
-        # 共通
+        # スペース, 変換/無変換共通
         for user_mod_key in ['U0-', 'U1-']:
-            # Space
+            # スペース
             keymap_global[mod_key + user_mod_key + 'B'] = mod_key + 'Space'
+
+            # ファンクションキー
+            for i, key in enumerate([str(x) for x in range(1, 10)] + ['0', 'Minus', 'Caret'], start=1):
+                keymap_global[mod_key + user_mod_key + key] = mod_key + 'F' + str(i)
 
             # 右手
             keymap_global[mod_key + user_mod_key + 'H'] = mod_key + 'Left'
@@ -67,26 +70,23 @@ def configure(keymap):
             keymap_global[mod_key + user_mod_key + 'T'] = mod_key + 'Enter'
             keymap_global[mod_key + user_mod_key + 'Q'] = mod_key + 'Esc'
 
-            # 文字削除
+            # 両手で対称
             keymap_global[mod_key + user_mod_key + 'Tab'] = mod_key + 'Back'
             keymap_global[mod_key + user_mod_key + 'Atmark'] = mod_key + 'Delete'
 
-            # ファンクションキー
-            for i, key in enumerate([str(x) for x in range(1, 10)] + ['0', 'Minus', 'Caret'], start=1):
-                keymap_global[mod_key + user_mod_key + key] = mod_key + 'F' + str(i)
-
-        # 変換/無変換 一部上書き
+        # 変換/無変換を押していれば削除
         keymap_global[mod_key + 'U1-H'] = mod_key + 'Back'
+        keymap_global[mod_key + 'U1-L'] = mod_key + 'Delete'
+
+        # 変換/無変換を押していれば大きく移動
         keymap_global[mod_key + 'U1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'U1-K'] = mod_key + 'PageUp'
-        keymap_global[mod_key + 'U1-L'] = mod_key + 'Delete'
+
+        # 変換/無変換を押していればBack/Deleteを反転
         keymap_global[mod_key + 'U1-Tab'] = mod_key + 'Delete'
         keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
-    # ランチャー(PowerToys Run)
-    keymap_global['O-U0-LCtrl'] = 'A-Space'
-
-    # マクロ
+    # 変換/無変換を押していれば削除
     keymap_global['U1-U'] = 'S-Home', 'Delete'
     keymap_global['U1-O'] = 'S-End', 'Delete'
 
@@ -98,6 +98,7 @@ def configure(keymap):
     keymap_global['U1-W'] = 'W-S-Left'
     keymap_global['U1-R'] = 'W-S-Right'
 
+    # モニター番号を指定して移動
     def mouse_move_between_monitor_command(monitor):
         def run():
             mouse_x, mouse_y = pyauto.Input.getCursorPos()
@@ -118,12 +119,15 @@ def configure(keymap):
                 mouse_y = int(monitor_info[next_monitor][0][1] + (mouse_y - monitor_info[current_monitor][0][1]) * monitor_height / current_monitor_height)
                 Input.send([pyauto.MouseMove(mouse_x, 0), pyauto.MouseMove(mouse_x, mouse_y)]) # yが現在の画面の高さ以上の座標に移動するとxがおかしくなるので2段階に分けて移動する
 
-            keymap.InputKeyCommand('Ctrl')()
+            keymap.InputKeyCommand('Ctrl')() # Ctrlキーを押すとポインターの位置を表示する
 
         return run
 
     for i in range(4):
         keymap_global[f'U1-{i+1}'] = mouse_move_between_monitor_command(i)
+
+    # ランチャー(PowerToys Run)
+    keymap_global['O-U0-LCtrl'] = 'A-Space'
 
     # クリップボードの履歴
     keymap_global['U0-V'] = 'W-V'
@@ -132,12 +136,15 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # フットスイッチ
 
+    # ユーザモディファイアキーの定義
     keymap.defineModifier(124, 'LUser2') # 左
     keymap.defineModifier(126, 'RUser2') # 右
 
+    # フットスイッチをShiftにする
     for x in string.ascii_uppercase + string.digits:
         keymap_global['U2-' + x] = 'S-' + x
 
+    # ワンショット
     keymap_global['O-(124)'] = 'Esc'
     keymap_global['(125)'] = 'Space'
     keymap_global['O-(126)'] = 'Enter'
