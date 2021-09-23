@@ -44,7 +44,7 @@ def configure(keymap):
         keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
 
         # スペース, 無変換/変換共通
-        for user_mod_key in ['U0-', 'U1-']:
+        for user_mod_key in ['U0-', 'U1-', 'U0-U1-']:
             # スペース
             keymap_global[mod_key + user_mod_key + 'B'] = mod_key + 'Space'
 
@@ -75,8 +75,26 @@ def configure(keymap):
             keymap_global[mod_key + user_mod_key + 'Q'] = mod_key + 'Esc'
 
             # 両手で対称
-            keymap_global[mod_key + user_mod_key + 'Tab'] = mod_key + 'Back'
+            keymap_global[mod_key + user_mod_key + 'Tab']    = mod_key + 'Back'
             keymap_global[mod_key + user_mod_key + 'Atmark'] = mod_key + 'Delete'
+
+        # スペースと無変換/変換を同時に押していれば選択する
+        ## 右手
+        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
+        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
+        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
+        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
+        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
+        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
+        ## 左手
+        keymap_global[mod_key + 'U0-U1-E'] = mod_key + 'S-Up'
+        keymap_global[mod_key + 'U0-U1-S'] = mod_key + 'S-Left'
+        keymap_global[mod_key + 'U0-U1-D'] = mod_key + 'S-Down'
+        keymap_global[mod_key + 'U0-U1-F'] = mod_key + 'S-Right'
+        keymap_global[mod_key + 'U0-U1-A'] = mod_key + 'S-Home'
+        keymap_global[mod_key + 'U0-U1-G'] = mod_key + 'S-End'
+        keymap_global[mod_key + 'U0-U1-W'] = mod_key + 'S-PageUp'
+        keymap_global[mod_key + 'U0-U1-R'] = mod_key + 'S-PageDown'
 
         # 無変換/変換を押していれば削除
         keymap_global[mod_key + 'U1-H'] = mod_key + 'Back'
@@ -87,12 +105,18 @@ def configure(keymap):
         keymap_global[mod_key + 'U1-K'] = mod_key + 'PageUp'
 
         # 無変換/変換を押していればBack/Deleteを反転
-        keymap_global[mod_key + 'U1-Tab'] = mod_key + 'Delete'
+        keymap_global[mod_key + 'U1-Tab']    = mod_key + 'Delete'
         keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
     # 無変換/変換を押していれば削除
     keymap_global['U1-U'] = 'S-Home', 'Delete'
     keymap_global['U1-O'] = 'S-End', 'Delete'
+    keymap_global['U1-A'] = 'S-Home', 'Delete'
+    keymap_global['U1-G'] = 'S-End', 'Delete'
+
+    # スペースと無変換/変換を同時に押していれば行を連結
+    keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
+    keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
 
     # モニター間の移動
     keymap_global['U1-E'] = 'W-Up'
