@@ -213,14 +213,14 @@ def configure(keymap):
     keymap_vlc['U0-Comma'] = 'CloseBracket'
     keymap_vlc['U0-Period'] = 'A-C-Left'
     keymap_vlc['U0-Slash'] = 'A-C-Right'
-    keymap_vlc['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
-    keymap_vlc['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
-    keymap_vlc['D-(124)'] = 'Left'  #押された瞬間に入力する
-    keymap_vlc['D-(126)'] = 'Right' #押された瞬間に入力する
-    keymap_vlc['D-LU2-(124)'] = 'Left'  #押されている間ずっと入力する
-    keymap_vlc['D-RU2-(126)'] = 'Right' #押されている間ずっと入力する
-    keymap_vlc['D-(125)'] = lambda: None #長押しされても入力しない
-    keymap_vlc['U-(125)'] = 'Space' #離されたときに入力する
+    keymap_vlc['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
+    keymap_vlc['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
+    keymap_vlc['D-(124)'] = 'Left'  # 押された瞬間に入力する
+    keymap_vlc['D-(126)'] = 'Right' # 押された瞬間に入力する
+    keymap_vlc['D-LU2-(124)'] = 'Left'  # 押されている間ずっと入力する
+    keymap_vlc['D-RU2-(126)'] = 'Right' # 押されている間ずっと入力する
+    keymap_vlc['D-(125)'] = lambda: None # 長押しされても入力しない
+    keymap_vlc['U-(125)'] = 'Space' # 離されたときに入力する
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
@@ -228,7 +228,7 @@ def configure(keymap):
     keymap_splashtop['O-(28)'] = '(28)'
 
     # Minecraft
-    #ワンショットモディファイアの無効化と押されているときにずっと入力する様にした方がいいかも?
+    # ワンショットモディファイアの無効化と押されているときにずっと入力する様にした方がいいかも?
     keymap_minecraft = keymap.defineWindowKeymap(exe_name='javaw.exe', window_text='Minecraft*')
     keymap_minecraft['D-Space'] = 'D-Space'
     keymap_minecraft['U-Space'] = 'U-Space'
@@ -240,18 +240,22 @@ def configure(keymap):
 
     # Fusion 360
     keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
-    keymap_fusion360['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_fusion360['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
     keymap_fusion360['D-(124)'] = 'D-S-MButton'
     keymap_fusion360['U-(124)'] = 'U-S-MButton'
-    keymap_fusion360['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_fusion360['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
     keymap_fusion360['D-(126)'] = 'D-MButton'
     keymap_fusion360['U-(126)'] = 'U-MButton'
 
     # Cura
     keymap_cura = keymap.defineWindowKeymap(exe_name='Cura.exe')
-    keymap_cura['O-(124)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_cura['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
     keymap_cura['D-(124)'] = 'D-RButton'
     keymap_cura['U-(124)'] = 'U-RButton'
-    keymap_cura['O-(126)'] = lambda: None #ワンショットモディファイアを無効化する
+    keymap_cura['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
     keymap_cura['D-(126)'] = 'D-MButton'
     keymap_cura['U-(126)'] = 'U-MButton'
+
+    # GnuCash
+    keymap_cura = keymap.defineWindowKeymap(exe_name='gnucash.exe')
+    keymap_cura['C-V'] = 'S-Insert' # Ctrlのショートカットキーが効かないのでCtrl-Vの代わりにShift-Insertを入力する
