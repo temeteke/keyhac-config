@@ -31,17 +31,14 @@ def configure(keymap):
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
 
-    # 無変換/変換でIMEを切替
-    keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
-    keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
-
-    # スペースを押していれば無変換/変換を入力
-    keymap_global['O-U0-(29)'] = '(29)'
-    keymap_global['O-U0-(28)'] = '(28)'
-
     for mod_key in MOD_KEYS_COMBS:
         # ワンショット
         keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
+        keymap_global['O-' + mod_key + 'U1-Space'] = mod_key + 'Space'
+        keymap_global['O-' + mod_key + '(29)'] = mod_key + '(29)'
+        keymap_global['O-' + mod_key + '(28)'] = mod_key + '(28)'
+        keymap_global['O-' + mod_key + 'U0-(29)'] = mod_key + '(29)'
+        keymap_global['O-' + mod_key + 'U0-(28)'] = mod_key + '(28)'
 
         # スペース, 無変換/変換共通
         for user_mod_key in ['U0-', 'U1-', 'U0-U1-']:
@@ -108,6 +105,10 @@ def configure(keymap):
         keymap_global[mod_key + 'U1-Tab']    = mod_key + 'Delete'
         keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
+    # 無変換/変換でIMEを切替
+    keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
+    keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
+
     # 無変換/変換を押していれば削除
     keymap_global['U1-U'] = 'S-Home', 'Delete'
     keymap_global['U1-O'] = 'S-End', 'Delete'
@@ -173,6 +174,9 @@ def configure(keymap):
     keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
 
     # 括弧の入力
+    keymap_global['U1-S-2'] = 'S-2', 'S-2', 'Left'
+    keymap_global['U1-S-7'] = 'S-7', 'S-7', 'Left'
+    keymap_global['U1-S-Atmark'] = 'S-Atmark', 'S-Atmark', 'Left'
     keymap_global['U1-S-8'] = 'S-8', 'S-9', 'Left'
     keymap_global['U1-S-9'] = 'S-8', 'S-9', 'Left'
     keymap_global['U1-OpenBracket']  = 'OpenBracket', 'CloseBracket', 'Left'
