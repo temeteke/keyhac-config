@@ -24,6 +24,12 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
 
     # --------------------------------------------------------------------
+    # 標準のモディファイアキーのワンショット
+    keymap_global['O-LCtrl'] = 'Esc'
+    keymap_global['O-LShift'] = lambda: keymap.wnd.setImeStatus(0)
+    keymap_global['O-RShift'] = lambda: keymap.wnd.setImeStatus(1)
+
+    # --------------------------------------------------------------------
     # スペース, 無変換/変換
 
     # ユーザモディファイアキーの定義
