@@ -24,22 +24,26 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
 
     # --------------------------------------------------------------------
-    # スペース, 変換/無変換
+    # スペース, 無変換/変換
 
     # ユーザモディファイアキーの定義
     keymap.defineModifier('Space', 'User0')
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
 
-    # 変換/無変換でIMEを切替
+    # 無変換/変換でIMEを切替
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
+
+    # スペースを押していれば無変換/変換を入力
+    keymap_global['O-U0-(29)'] = '(29)'
+    keymap_global['O-U0-(28)'] = '(28)'
 
     for mod_key in MOD_KEYS_COMBS:
         # ワンショット
         keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
 
-        # スペース, 変換/無変換共通
+        # スペース, 無変換/変換共通
         for user_mod_key in ['U0-', 'U1-']:
             # スペース
             keymap_global[mod_key + user_mod_key + 'B'] = mod_key + 'Space'
@@ -74,19 +78,19 @@ def configure(keymap):
             keymap_global[mod_key + user_mod_key + 'Tab'] = mod_key + 'Back'
             keymap_global[mod_key + user_mod_key + 'Atmark'] = mod_key + 'Delete'
 
-        # 変換/無変換を押していれば削除
+        # 無変換/変換を押していれば削除
         keymap_global[mod_key + 'U1-H'] = mod_key + 'Back'
         keymap_global[mod_key + 'U1-L'] = mod_key + 'Delete'
 
-        # 変換/無変換を押していれば大きく移動
+        # 無変換/変換を押していれば大きく移動
         keymap_global[mod_key + 'U1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'U1-K'] = mod_key + 'PageUp'
 
-        # 変換/無変換を押していればBack/Deleteを反転
+        # 無変換/変換を押していればBack/Deleteを反転
         keymap_global[mod_key + 'U1-Tab'] = mod_key + 'Delete'
         keymap_global[mod_key + 'U1-Atmark'] = mod_key + 'Back'
 
-    # 変換/無変換を押していれば削除
+    # 無変換/変換を押していれば削除
     keymap_global['U1-U'] = 'S-Home', 'Delete'
     keymap_global['U1-O'] = 'S-End', 'Delete'
 
