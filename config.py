@@ -25,17 +25,25 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
     # 標準のモディファイアキーのワンショット
+
     keymap_global['O-LCtrl'] = 'Esc'
     keymap_global['O-LShift'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-RShift'] = lambda: keymap.wnd.setImeStatus(1)
 
     # --------------------------------------------------------------------
-    # スペース, 無変換/変換
-
     # ユーザモディファイアキーの定義
+
+    ## スペース
     keymap.defineModifier('Space', 'User0')
+    ## 無変換/変換
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
+    ## フットスイッチ
+    keymap.defineModifier(124, 'LUser2') # 左
+    keymap.defineModifier(126, 'RUser2') # 右
+
+    # --------------------------------------------------------------------
+    # スペース, 無変換/変換
 
     for mod_key in MOD_KEYS_COMBS:
         # ワンショット
@@ -194,10 +202,6 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
     # フットスイッチ
-
-    # ユーザモディファイアキーの定義
-    keymap.defineModifier(124, 'LUser2') # 左
-    keymap.defineModifier(126, 'RUser2') # 右
 
     # フットスイッチをShiftにする
     for x in string.ascii_uppercase + string.digits:
