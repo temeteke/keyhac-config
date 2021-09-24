@@ -116,6 +116,12 @@ def configure(keymap):
     ## クリップボード
     keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
 
+    # 矢印キー
+    keymap_global['U0-Up']    = 'PageUp'
+    keymap_global['U0-Down']  = 'PageDown'
+    keymap_global['U0-Left']  = 'Home'
+    keymap_global['U0-Right'] = 'End'
+
     # --------------------------------------------------------------------
     # 無変換/変換
 
