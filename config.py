@@ -27,8 +27,8 @@ def configure(keymap):
     # 標準のモディファイアキーのワンショット
 
     keymap_global['O-LCtrl'] = 'Esc'
-    keymap_global['O-LShift'] = lambda: keymap.wnd.setImeStatus(0)
-    keymap_global['O-RShift'] = lambda: keymap.wnd.setImeStatus(1)
+    keymap_global['O-LShift'] = 'W-Tab'
+    keymap_global['O-RShift'] = 'W-D'
 
     # --------------------------------------------------------------------
     # ユーザモディファイアキーの定義
@@ -85,6 +85,14 @@ def configure(keymap):
 
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
+
+    # ウィンドウ切替
+    keymap_global['O-U0-LShift'] = 'D-Alt', 'Tab'
+    keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
+    keymap_mvf['U-Space'] = 'U-Alt' # スペースを離したら確定する
+
+    # ウィンドウ切替
+    keymap_global['O-U0-RShift'] = 'A-Esc'
 
     # 入力補助
     keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
