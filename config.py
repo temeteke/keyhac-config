@@ -122,7 +122,11 @@ def configure(keymap):
     keymap_global['U0-Left']  = 'Home'
     keymap_global['U0-Right'] = 'End'
 
-    # --------------------------------------------------------------------
+    # アプリケーションで上書きされることもあるキー
+    keymap_global['U0-X'] = 'C-W' # 閉じる
+    keymap_global['U0-Z'] = 'C-Z' # 戻る
+
+   # --------------------------------------------------------------------
     # 無変換/変換
 
     for mod_key in MOD_KEYS_COMBS:
