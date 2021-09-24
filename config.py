@@ -145,9 +145,9 @@ def configure(keymap):
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
 
     # 無変換/変換を押していれば削除
-    keymap_global['RU1-U'] = 'S-Home', 'Delete'
+    keymap_global['RU1-U'] = 'S-Home', 'Back'
     keymap_global['RU1-O'] = 'S-End', 'Delete'
-    keymap_global['LU1-A'] = 'S-Home', 'Delete'
+    keymap_global['LU1-A'] = 'S-Home', 'Back'
     keymap_global['LU1-G'] = 'S-End', 'Delete'
 
     # モニター間の移動
