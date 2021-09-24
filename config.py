@@ -43,16 +43,12 @@ def configure(keymap):
     keymap.defineModifier(126, 'RUser2') # 右
 
     # --------------------------------------------------------------------
-    # スペース, 無変換/変換
+    # スペース
 
     for mod_key in MOD_KEYS_COMBS:
         # ワンショット
         keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
         keymap_global['O-' + mod_key + 'U1-Space'] = mod_key + 'Space'
-        keymap_global['O-' + mod_key + '(29)'] = mod_key + '(29)'
-        keymap_global['O-' + mod_key + '(28)'] = mod_key + '(28)'
-        keymap_global['O-' + mod_key + 'U0-(29)'] = mod_key + '(29)'
-        keymap_global['O-' + mod_key + 'U0-(28)'] = mod_key + '(28)'
 
         # スペース
         keymap_global[mod_key + 'U0-B'] = mod_key + 'Space'
@@ -87,23 +83,50 @@ def configure(keymap):
         keymap_global[mod_key + 'U0-Tab']    = mod_key + 'Back'
         keymap_global[mod_key + 'U0-Atmark'] = mod_key + 'Delete'
 
-        # スペースと無変換/変換を同時に押していれば選択する
-        ## 右手
-        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
-        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
-        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
-        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
-        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
-        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
+    # ランチャー(PowerToys Run)
+    keymap_global['O-U0-LCtrl'] = 'A-Space'
+
+    # 入力補助
+    keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
+    ## 日時入力
+    keymap_global['U0-Semicolon']['Semicolon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y/%m/%d'))()
+    keymap_global['U0-Semicolon']['Colon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H:%M:%S'))()
+    keymap_global['U0-Semicolon']['J'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y%m%d'))()
+    keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
+    ## 括弧の入力
+    keymap_global['U0-Semicolon']['2'] = 'S-2', 'S-2', 'Left'
+    keymap_global['U0-Semicolon']['7'] = 'S-7', 'S-7', 'Left'
+    keymap_global['U0-Semicolon']['Atmark'] = 'S-Atmark', 'S-Atmark', 'Left'
+    keymap_global['U0-Semicolon']['8'] = 'S-8', 'S-9', 'Left'
+    keymap_global['U0-Semicolon']['9'] = 'S-8', 'S-9', 'Left'
+    keymap_global['U0-Semicolon']['OpenBracket']  = 'OpenBracket', 'CloseBracket', 'Left'
+    keymap_global['U0-Semicolon']['CloseBracket'] = 'OpenBracket', 'CloseBracket', 'Left'
+    keymap_global['U0-Semicolon']['S-OpenBracket']  = 'S-OpenBracket', 'S-CloseBracket', 'Left'
+    keymap_global['U0-Semicolon']['S-CloseBracket'] = 'S-OpenBracket', 'S-CloseBracket', 'Left'
+    keymap_global['U0-Semicolon']['Comma']  = 'S-Comma', 'S-Period', 'Left'
+    keymap_global['U0-Semicolon']['Period'] = 'S-Comma', 'S-Period', 'Left'
+    ## クリップボード
+    keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
+
+    # --------------------------------------------------------------------
+    # 無変換/変換
+
+    for mod_key in MOD_KEYS_COMBS:
+        # ワンショット
+        keymap_global['O-' + mod_key + '(29)'] = mod_key + '(29)'
+        keymap_global['O-' + mod_key + '(28)'] = mod_key + '(28)'
+        keymap_global['O-' + mod_key + 'U0-(29)'] = mod_key + '(29)'
+        keymap_global['O-' + mod_key + 'U0-(28)'] = mod_key + '(28)'
+
+        # 左右逆のモディファイアキーを押していたらShiftにする
         ## 左手
-        keymap_global[mod_key + 'U0-U1-E'] = mod_key + 'S-Up'
-        keymap_global[mod_key + 'U0-U1-S'] = mod_key + 'S-Left'
-        keymap_global[mod_key + 'U0-U1-D'] = mod_key + 'S-Down'
-        keymap_global[mod_key + 'U0-U1-F'] = mod_key + 'S-Right'
-        keymap_global[mod_key + 'U0-U1-A'] = mod_key + 'S-Home'
-        keymap_global[mod_key + 'U0-U1-G'] = mod_key + 'S-End'
-        keymap_global[mod_key + 'U0-U1-W'] = mod_key + 'S-PageUp'
-        keymap_global[mod_key + 'U0-U1-R'] = mod_key + 'S-PageDown'
+        for key in '12345QWERTASDFGZXCVB':
+            keymap_global[mod_key + 'RU1-' + key] = mod_key + 'S-' + key
+        ## 右手
+        for key in '67890YUIOPHJKLNM':
+            keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
+        for key in ('Minus', 'Caret', 'Yen', 'Atmark', 'OpenBracket', 'Plus', 'Colon', 'CloseBracket', 'Comma', 'Period', 'Slash', 'Underscore'):
+            keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
 
         # 無変換/変換を押していれば削除
         keymap_global[mod_key + 'RU1-H'] = mod_key + 'Back'
@@ -117,16 +140,6 @@ def configure(keymap):
         keymap_global[mod_key + 'LU1-Tab']    = mod_key + 'Delete'
         keymap_global[mod_key + 'RU1-Atmark'] = mod_key + 'Back'
 
-        # 逆のU1を押していたらShiftにする
-        ## 左手
-        for key in '12345QWERTASDFGZXCVB':
-            keymap_global[mod_key + 'RU1-' + key] = mod_key + 'S-' + key
-        ## 右手
-        for key in '67890YUIOPHJKLNM':
-            keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
-        for key in ('Minus', 'Caret', 'Yen', 'Atmark', 'OpenBracket', 'Plus', 'Colon', 'CloseBracket', 'Comma', 'Period', 'Slash', 'Underscore'):
-            keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
-
     # 無変換/変換でIMEを切替
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
@@ -136,10 +149,6 @@ def configure(keymap):
     keymap_global['RU1-O'] = 'S-End', 'Delete'
     keymap_global['LU1-A'] = 'S-Home', 'Delete'
     keymap_global['LU1-G'] = 'S-End', 'Delete'
-
-    # スペースと無変換/変換を同時に押していれば行を連結
-    keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
-    keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
 
     # モニター間の移動
     keymap_global['LU1-E'] = 'W-Up'
@@ -177,8 +186,31 @@ def configure(keymap):
     for i in range(4):
         keymap_global[f'LU1-{i+1}'] = mouse_move_between_monitor_command(i)
 
-    # ランチャー(PowerToys Run)
-    keymap_global['O-U0-LCtrl'] = 'A-Space'
+    # --------------------------------------------------------------------
+    # スペース, 無変換/変換
+
+    # スペースと無変換/変換を同時に押していれば選択する
+    for mod_key in MOD_KEYS_COMBS:
+        ## 右手
+        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
+        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
+        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
+        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
+        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
+        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
+        ## 左手
+        keymap_global[mod_key + 'U0-U1-E'] = mod_key + 'S-Up'
+        keymap_global[mod_key + 'U0-U1-S'] = mod_key + 'S-Left'
+        keymap_global[mod_key + 'U0-U1-D'] = mod_key + 'S-Down'
+        keymap_global[mod_key + 'U0-U1-F'] = mod_key + 'S-Right'
+        keymap_global[mod_key + 'U0-U1-A'] = mod_key + 'S-Home'
+        keymap_global[mod_key + 'U0-U1-G'] = mod_key + 'S-End'
+        keymap_global[mod_key + 'U0-U1-W'] = mod_key + 'S-PageUp'
+        keymap_global[mod_key + 'U0-U1-R'] = mod_key + 'S-PageDown'
+
+    # スペースと無変換/変換を同時に押していれば行を連結
+    keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
+    keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
 
     # クリップボード
     def paste_clipboard_text():
@@ -187,28 +219,6 @@ def configure(keymap):
 
     keymap_global['U0-V'] = lambda: paste_clipboard_text()  # プレーンテキストとして貼り付け
     keymap_global['LU1-V'] = 'W-V' # クリップボードの履歴を表示
-
-    # 入力補助
-    keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
-    ## 日時入力
-    keymap_global['U0-Semicolon']['Semicolon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y/%m/%d'))()
-    keymap_global['U0-Semicolon']['Colon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H:%M:%S'))()
-    keymap_global['U0-Semicolon']['J'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y%m%d'))()
-    keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
-    ## 括弧の入力
-    keymap_global['U0-Semicolon']['2'] = 'S-2', 'S-2', 'Left'
-    keymap_global['U0-Semicolon']['7'] = 'S-7', 'S-7', 'Left'
-    keymap_global['U0-Semicolon']['Atmark'] = 'S-Atmark', 'S-Atmark', 'Left'
-    keymap_global['U0-Semicolon']['8'] = 'S-8', 'S-9', 'Left'
-    keymap_global['U0-Semicolon']['9'] = 'S-8', 'S-9', 'Left'
-    keymap_global['U0-Semicolon']['OpenBracket']  = 'OpenBracket', 'CloseBracket', 'Left'
-    keymap_global['U0-Semicolon']['CloseBracket'] = 'OpenBracket', 'CloseBracket', 'Left'
-    keymap_global['U0-Semicolon']['S-OpenBracket']  = 'S-OpenBracket', 'S-CloseBracket', 'Left'
-    keymap_global['U0-Semicolon']['S-CloseBracket'] = 'S-OpenBracket', 'S-CloseBracket', 'Left'
-    keymap_global['U0-Semicolon']['Comma']  = 'S-Comma', 'S-Period', 'Left'
-    keymap_global['U0-Semicolon']['Period'] = 'S-Comma', 'S-Period', 'Left'
-    ## クリップボード
-    keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
 
     # --------------------------------------------------------------------
     # フットスイッチ
