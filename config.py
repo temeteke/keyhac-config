@@ -291,6 +291,13 @@ def configure(keymap):
     keymap_browser['U0-Period'] = 'C-R'
     keymap_browser['U0-I'] = 'C-L'
 
+    # mintty
+    keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
+    keymap_mintty['RU1-U'] = 'C-U'
+    keymap_mintty['RU1-O'] = 'C-O'
+    keymap_mintty['LU1-A'] = 'C-U'
+    keymap_mintty['LU1-G'] = 'C-O'
+
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
     keymap_vlc['U0-Z'] = 'C-J'
