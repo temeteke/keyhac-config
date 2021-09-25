@@ -41,6 +41,8 @@ def configure(keymap):
     ## フットスイッチ
     keymap.defineModifier(124, 'LUser2') # 左
     keymap.defineModifier(126, 'RUser2') # 右
+    ## セミコロン
+    keymap.defineModifier('Semicolon', 'RUser3') # 右
 
     # --------------------------------------------------------------------
     # スペース
@@ -126,7 +128,7 @@ def configure(keymap):
     keymap_global['U0-X'] = 'C-W' # 閉じる
     keymap_global['U0-Z'] = 'C-Z' # 戻る
 
-   # --------------------------------------------------------------------
+    # --------------------------------------------------------------------
     # 無変換/変換
 
     for mod_key in MOD_KEYS_COMBS:
@@ -237,6 +239,28 @@ def configure(keymap):
 
     keymap_global['U0-V'] = lambda: paste_clipboard_text()  # プレーンテキストとして貼り付け
     keymap_global['LU1-V'] = 'W-V' # クリップボードの履歴を表示
+
+    # --------------------------------------------------------------------
+    # セミコロン
+    for mod_key in MOD_KEYS_COMBS:
+        keymap_global['O-' + mod_key + 'Semicolon'] = mod_key + 'Semicolon'
+    ## 2段目 1段目の記号にする Pに割当てはなし
+    for i, key in enumerate('QWERTYUIO', start=1):
+        keymap_global['U3-' + key] = f'S-{i}'
+    ## 3段目 数字にする 0は左Ctrl
+    keymap_global['U3-LCtrl'] = '0'
+    for i, key in enumerate('ASDFGHJKL', start=1):
+        keymap_global['U3-' + key] = str(i)
+    ## 4段目 押しにくい記号
+    keymap_global['U3-Z']      = 'Minus' # IMEオンの時にーを入力できるようにInputTextCommandは使わない
+    keymap_global['U3-X']      = keymap.InputTextCommand('=')
+    keymap_global['U3-C']      = keymap.InputTextCommand('^')
+    keymap_global['U3-V']      = keymap.InputTextCommand('~')
+    keymap_global['U3-B']      = keymap.InputTextCommand('|')
+    keymap_global['U3-N']      = keymap.InputTextCommand('^') # USキーボードの位置から
+    keymap_global['U3-M']      = keymap.InputTextCommand('$') # Vimのことを考えると^の右に$が欲しい
+    keymap_global['U3-Comma']  = keymap.InputTextCommand('[')
+    keymap_global['U3-Period'] = keymap.InputTextCommand(']')
 
     # --------------------------------------------------------------------
     # フットスイッチ
