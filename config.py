@@ -244,6 +244,10 @@ def configure(keymap):
     # セミコロン
     for mod_key in MOD_KEYS_COMBS:
         keymap_global['O-' + mod_key + 'Semicolon'] = mod_key + 'Semicolon'
+    ## 1段目 USキーボードの配列にする
+    for i, text in enumerate('!@#$%^&*(', start=1):
+        keymap_global[f'U3-{i}'] = keymap.InputTextCommand(text)
+    keymap_global['U3-0'] = keymap.InputTextCommand(')')
     ## 2段目 1段目の記号にする Pに割当てはなし
     for i, key in enumerate('QWERTYUIO', start=1):
         keymap_global['U3-' + key] = f'S-{i}'
