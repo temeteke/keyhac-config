@@ -27,8 +27,9 @@ def configure(keymap):
     # 標準のモディファイアキーのワンショット
 
     keymap_global['O-LCtrl'] = 'Esc'
-    keymap_global['O-LShift'] = 'W-Tab'
-    keymap_global['O-RShift'] = 'W-D'
+    #誤爆が多いので無効化
+    #keymap_global['O-LShift'] = 'W-Tab'
+    #keymap_global['O-RShift'] = 'W-D'
 
     # --------------------------------------------------------------------
     # ユーザモディファイアキーの定義
@@ -90,11 +91,11 @@ def configure(keymap):
 
     # ウィンドウ切替
     keymap_global['O-U0-LShift'] = 'D-Alt', 'Tab'
+    keymap_global['O-U0-RShift'] = 'D-Alt', 'Tab'
+    keymap_global['O-LU0-RS-LShift'] = 'D-Alt', 'S-Tab'
+    keymap_global['O-LU0-LS-RShift'] = 'D-Alt', 'S-Tab'
     keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
     keymap_mvf['U-Space'] = 'U-Alt' # スペースを離したら確定する
-
-    # ウィンドウ切替
-    keymap_global['O-U0-RShift'] = 'A-Esc'
 
     # 入力補助
     keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
