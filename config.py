@@ -6,6 +6,7 @@ import string
 
 import pyauto
 from keyhac import *
+from time import time
 
 
 def configure(keymap):
@@ -17,6 +18,26 @@ def configure(keymap):
     MOD_KEYS_COMBS = []
     for i in range(len(MOD_KEYS)+1):
         MOD_KEYS_COMBS += [''.join(x) for x in itertools.combinations(MOD_KEYS, i)]
+
+    # --------------------------------------------------------------------
+    # 汎用クラス
+
+    # キー入力のクラス
+    class Key():
+        def __init__(self, key):
+            #print(self, key)
+            self.key = key
+            self.last_time = time()
+
+        def inputCommand(self, count=1, interval=0):
+            def func():
+                #print(self, self.key, self.last_time)
+                if time() > self.last_time + interval:
+                    for i in range(count):
+                        keymap.InputKeyCommand(self.key)()
+                    self.last_time = time()
+                    #print(self, self.key, self.last_time, 'input')
+            return func
 
     # --------------------------------------------------------------------
     # キーマップ
@@ -342,10 +363,17 @@ def configure(keymap):
     keymap_vlc['U0-Slash'] = 'A-C-Right'
     keymap_vlc['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
     keymap_vlc['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_vlc['D-(124)'] = 'Left'  # 押された瞬間に入力する
-    keymap_vlc['D-(126)'] = 'Right' # 押された瞬間に入力する
-    keymap_vlc['D-LU2-(124)'] = 'Left'  # 押されている間ずっと入力する
-    keymap_vlc['D-RU2-(126)'] = 'Right' # 押されている間ずっと入力する
+
+    ## フットスイッチ
+    ### 左右のスイッチを長押ししていたら0.5秒あたり30秒移動
+    key_left = Key('Left')
+    key_right = Key('Right')
+    keymap_vlc['D-(124)'] = key_left.inputCommand(count=3)  # 押された瞬間に入力する
+    keymap_vlc['D-(126)'] = key_right.inputCommand(count=3) # 押された瞬間に入力する
+    keymap_vlc['D-LU2-(124)'] = key_left.inputCommand(count=3, interval=0.5)  # 押されている間ずっと入力する
+    keymap_vlc['D-RU2-(126)'] = key_right.inputCommand(count=3, interval=0.5) # 押されている間ずっと入力する
+
+    ### 中央のスイッチで再生・一時停止
     keymap_vlc['D-(125)'] = lambda: None # 長押しされても入力しない
     keymap_vlc['U-(125)'] = 'Space' # 離されたときに入力する
 
