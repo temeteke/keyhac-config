@@ -64,7 +64,7 @@ def configure(keymap):
     keymap.defineModifier(124, 'LUser2') # 左
     keymap.defineModifier(126, 'RUser2') # 右
     ## セミコロン
-    keymap.defineModifier('Semicolon', 'RUser3') # 右
+    keymap.defineModifier('Semicolon', 'RUser3')
 
     # --------------------------------------------------------------------
     # スペース
@@ -303,17 +303,22 @@ def configure(keymap):
     keymap_global['O-(126)'] = 'Enter'
     keymap_global['U2-(125)'] = '(127)'
 
-    # テンキーのNumLock
+    # テンキー
     keymap_global['U2-Num0'] = 'Insert'
-    keymap_global['U2-Num1'] = 'End'
-    keymap_global['U2-Num2'] = 'Down'
-    keymap_global['U2-Num3'] = 'PageDown'
+    keymap_global['U2-Num1'] = 'Left', 'Down'
+    keymap_global['U2-Num2'] = 'Down', 'Esc'
+    keymap_global['U2-Num3'] = 'Right', 'Down'
     keymap_global['U2-Num4'] = 'Left'
     keymap_global['U2-Num5'] = 'Space'
     keymap_global['U2-Num6'] = 'Right'
-    keymap_global['U2-Num7'] = 'Home'
+    keymap_global['U2-Num7'] = 'Left', 'Up'
     keymap_global['U2-Num8'] = 'Up'
-    keymap_global['U2-Num9'] = 'PageUp'
+    keymap_global['U2-Num9'] = 'Right', 'Up'
+    keymap_global['U2-Decimal'] = 'Delete'
+    keymap_global['U2-Divide'] = 'Home'
+    keymap_global['U2-Subtract'] = 'PageUp'
+    keymap_global['U2-Add'] = 'PageDown'
+    keymap_global['U2-Multiply'] = 'End'
 
     # --------------------------------------------------------------------
     # アプリケーション別の設定
