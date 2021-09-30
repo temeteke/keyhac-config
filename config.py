@@ -40,6 +40,19 @@ def configure(keymap):
             return func
 
     # --------------------------------------------------------------------
+    # 環境依存の特殊キーの定義
+
+    ## フットスイッチの仮想キーコード
+    VK_FOOT_LEFT   = 124
+    VK_FOOT_CENTER = 125
+    VK_FOOT_RIGHT  = 126
+
+    ## フットスイッチのキー記述
+    KEY_FOOT_LEFT   = f'({VK_FOOT_LEFT})'
+    KEY_FOOT_CENTER = f'({VK_FOOT_CENTER})'
+    KEY_FOOT_RIGHT  = f'({VK_FOOT_RIGHT})'
+
+    # --------------------------------------------------------------------
     # キーマップ
 
     keymap_global = keymap.defineWindowKeymap()
@@ -61,8 +74,8 @@ def configure(keymap):
     keymap.defineModifier(29, 'LUser1') # 無変換
     keymap.defineModifier(28, 'RUser1') # 変換
     ## フットスイッチ
-    keymap.defineModifier(124, 'LUser2') # 左
-    keymap.defineModifier(126, 'RUser2') # 右
+    keymap.defineModifier(VK_FOOT_LEFT,  'LUser2') # 左
+    keymap.defineModifier(VK_FOOT_RIGHT, 'RUser2') # 右
     ## セミコロン
     keymap.defineModifier('Semicolon', 'RUser3')
 
@@ -291,19 +304,21 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # フットスイッチ
 
+    # フットスイッチ内
+    keymap_global['O-' + KEY_FOOT_LEFT] = 'Esc'
+    keymap_global[KEY_FOOT_CENTER] = 'Space'
+    keymap_global['O-' + KEY_FOOT_RIGHT] = 'Enter'
+    keymap_global['LU2-' + KEY_FOOT_CENTER] = 'Right'
+    keymap_global['RU2-' + KEY_FOOT_CENTER] = 'Left'
+
+    # フットスイッチとキーボード
     # フットスイッチをShiftにする
     for x in string.ascii_uppercase + string.digits:
         keymap_global['U2-' + x] = 'S-' + x
     for x in ('Minus', 'Caret', 'Yen', 'Atmark', 'OpenBracket', 'Plus', 'Colon', 'CloseBracket', 'Comma', 'Period', 'Slash', 'Underscore'):
         keymap_global['U2-' + x] = 'S-' + x
 
-    # ワンショット
-    keymap_global['O-(124)'] = 'Esc'
-    keymap_global['(125)'] = 'Space'
-    keymap_global['O-(126)'] = 'Enter'
-    keymap_global['U2-(125)'] = '(127)'
-
-    # テンキー
+    # フットスイッチとテンキー
     keymap_global['U2-Num0'] = 'Insert'
     keymap_global['U2-Num1'] = 'Left', 'Down'
     keymap_global['U2-Num2'] = 'Down', 'Esc'
@@ -323,6 +338,17 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # アプリケーション別の設定
 
+    # フットスイッチを矢印キーにするアプリケーション
+    keymap_foot_arrow = keymap.defineWindowKeymap(check_func=lambda window: window.getProcessName() in ('mpc-be64.exe', 'Whirligig.exe'))
+    keymap_foot_arrow['O-'     + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
+    keymap_foot_arrow['D-'     + KEY_FOOT_LEFT]  = 'D-Left'     # 押された瞬間にKeyDown
+    keymap_foot_arrow['D-LU2-' + KEY_FOOT_LEFT]  = 'D-Left'     # 押されている間KeyDown
+    keymap_foot_arrow['U-'     + KEY_FOOT_LEFT]  = 'U-Left'     # 離したときKeyUp
+    keymap_foot_arrow['O-'     + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
+    keymap_foot_arrow['D-'     + KEY_FOOT_RIGHT] = 'D-Right'    # 押された瞬間にKeyDown
+    keymap_foot_arrow['D-RU2-' + KEY_FOOT_RIGHT] = 'D-Right'    # 押されている間KeyDown
+    keymap_foot_arrow['U-'     + KEY_FOOT_RIGHT] = 'U-Right'    # 離したときKeyUp
+
     # Explorer
     keymap_explorer = keymap.defineWindowKeymap(exe_name='explorer.exe')
     keymap_explorer['U0-Z'] = 'A-Up'
@@ -333,13 +359,7 @@ def configure(keymap):
     keymap_explorer['U0-I'] = 'F2'
 
     # ブラウザ
-    def is_browser(window):
-        if window.getProcessName() in ('firefox.exe', 'chrome.exe', 'msedge.exe'):
-            return True
-        else:
-            return False
-
-    keymap_browser = keymap.defineWindowKeymap(check_func=is_browser)
+    keymap_browser = keymap.defineWindowKeymap(check_func=lambda window: window.getProcessName() in ('firefox.exe', 'chrome.exe', 'msedge.exe'))
     keymap_browser['U0-Z'] = 'C-S-T'
     keymap_browser['U0-X'] = 'C-W'
     keymap_browser['U0-C'] = 'C-PageUp'
@@ -366,21 +386,21 @@ def configure(keymap):
     keymap_vlc['U0-Comma'] = 'CloseBracket'
     keymap_vlc['U0-Period'] = 'A-C-Left'
     keymap_vlc['U0-Slash'] = 'A-C-Right'
-    keymap_vlc['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_vlc['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
 
     ## フットスイッチ
     ### 左右のスイッチを長押ししていたら0.5秒あたり30秒移動
     key_left = Key('Left')
     key_right = Key('Right')
-    keymap_vlc['D-(124)'] = key_left.inputCommand(count=3)  # 押された瞬間に入力する
-    keymap_vlc['D-(126)'] = key_right.inputCommand(count=3) # 押された瞬間に入力する
-    keymap_vlc['D-LU2-(124)'] = key_left.inputCommand(count=3, interval=0.5)  # 押されている間ずっと入力する
-    keymap_vlc['D-RU2-(126)'] = key_right.inputCommand(count=3, interval=0.5) # 押されている間ずっと入力する
+    keymap_vlc['O-'     + KEY_FOOT_LEFT]  = lambda: None                                  # ワンショットモディファイアを無効化
+    keymap_vlc['D-'     + KEY_FOOT_LEFT]  = key_left.inputCommand(count=3)                # 押された瞬間に入力
+    keymap_vlc['D-LU2-' + KEY_FOOT_LEFT]  = key_left.inputCommand(count=3, interval=0.5)  # 押されている間入力
+    keymap_vlc['O-'     + KEY_FOOT_RIGHT] = lambda: None                                  # ワンショットモディファイアを無効化
+    keymap_vlc['D-'     + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3)               # 押された瞬間に入力
+    keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3, interval=0.5) # 押されている間入力
 
     ### 中央のスイッチで再生・一時停止
-    keymap_vlc['D-(125)'] = lambda: None # 長押しされても入力しない
-    keymap_vlc['U-(125)'] = 'Space' # 離されたときに入力する
+    keymap_vlc['D-' + KEY_FOOT_CENTER] = lambda: None # 長押しされても入力しない
+    keymap_vlc['U-' + KEY_FOOT_CENTER] = 'Space' # 離されたときに入力する
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
@@ -400,21 +420,21 @@ def configure(keymap):
 
     # Fusion 360
     keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
-    keymap_fusion360['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_fusion360['D-(124)'] = 'D-S-MButton'
-    keymap_fusion360['U-(124)'] = 'U-S-MButton'
-    keymap_fusion360['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_fusion360['D-(126)'] = 'D-MButton'
-    keymap_fusion360['U-(126)'] = 'U-MButton'
+    keymap_fusion360['O-' + KEY_FOOT_LEFT]  = lambda: None  # ワンショットモディファイアを無効化
+    keymap_fusion360['D-' + KEY_FOOT_LEFT]  = 'D-S-MButton'
+    keymap_fusion360['U-' + KEY_FOOT_LEFT]  = 'U-S-MButton'
+    keymap_fusion360['O-' + KEY_FOOT_RIGHT] = lambda: None  # ワンショットモディファイアを無効化
+    keymap_fusion360['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
+    keymap_fusion360['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
 
     # Cura
     keymap_cura = keymap.defineWindowKeymap(exe_name='Cura.exe')
-    keymap_cura['O-(124)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_cura['D-(124)'] = 'D-RButton'
-    keymap_cura['U-(124)'] = 'U-RButton'
-    keymap_cura['O-(126)'] = lambda: None # ワンショットモディファイアを無効化する
-    keymap_cura['D-(126)'] = 'D-MButton'
-    keymap_cura['U-(126)'] = 'U-MButton'
+    keymap_cura['O-' + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
+    keymap_cura['D-' + KEY_FOOT_LEFT]  = 'D-RButton'
+    keymap_cura['U-' + KEY_FOOT_LEFT]  = 'U-RButton'
+    keymap_cura['O-' + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
+    keymap_cura['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
+    keymap_cura['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
 
     # GnuCash
     keymap_cura = keymap.defineWindowKeymap(exe_name='gnucash.exe')
