@@ -277,29 +277,49 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
     # セミコロン
+
+    ## ワンショット
     for mod_key in MOD_KEYS_COMBS:
         keymap_global['O-' + mod_key + 'Semicolon'] = mod_key + 'Semicolon'
-    ## 1段目 USキーボードの配列にする
+
+    ## 1段目 USキーボードの配列
+    keymap_global['U3-Esc'] = keymap.InputTextCommand('~')
     for i, text in enumerate('!@#$%^&*(', start=1):
         keymap_global[f'U3-{i}'] = keymap.InputTextCommand(text)
     keymap_global['U3-0'] = keymap.InputTextCommand(')')
-    ## 2段目 1段目の記号にする Pに割当てはなし
+
+    ## 2段目
+    ### JISキーボードの1段目の記号 Pに割当てはなし
     for i, key in enumerate('QWERTYUIO', start=1):
         keymap_global['U3-' + key] = f'S-{i}'
-    ## 3段目 数字にする 0は左Ctrl
-    keymap_global['U3-LCtrl'] = '0'
+    ### Tabは独自割当て
+    keymap_global['U3-Tab'] = 'Minus'
+
+    ## 3段目 数字
+    ### 0は左Ctrl
+    keymap_global['D-U3-LCtrl']   = keymap.InputTextCommand('0') # 押されている間入力する
+    keymap_global['D-C-U3-LCtrl'] = keymap.InputTextCommand('0') # 押されている間入力する
+    ### 1-9
     for i, key in enumerate('ASDFGHJKL', start=1):
         keymap_global['U3-' + key] = str(i)
+
     ## 4段目 押しにくい記号
-    keymap_global['U3-Z']      = 'Minus' # IMEオンの時にーを入力できるようにInputTextCommandは使わない
-    keymap_global['U3-X']      = keymap.InputTextCommand('=')
-    keymap_global['U3-C']      = keymap.InputTextCommand('^')
-    keymap_global['U3-V']      = keymap.InputTextCommand('~')
-    keymap_global['U3-B']      = keymap.InputTextCommand('|')
-    keymap_global['U3-N']      = keymap.InputTextCommand('^') # USキーボードの位置から
-    keymap_global['U3-M']      = keymap.InputTextCommand('$') # Vimのことを考えると^の右に$が欲しい
-    keymap_global['U3-Comma']  = keymap.InputTextCommand('[')
-    keymap_global['U3-Period'] = keymap.InputTextCommand(']')
+    keymap_global['D-U3-LShift']   = keymap.InputTextCommand('=') # 押されている間入力する
+    keymap_global['D-S-U3-LShift'] = keymap.InputTextCommand('=') # 押されている間入力する
+    keymap_global['U3-Z']          = 'Minus' # IMEオンの時にーを入力できるようにInputTextCommandは使わない
+    keymap_global['U3-X']          = keymap.InputTextCommand('+')
+    keymap_global['U3-C']          = keymap.InputTextCommand('*')
+    keymap_global['U3-V']          = 'S-Caret' # IMEオンの時に～を入力できるようにInputTextCommandは使わない
+    keymap_global['U3-B']          = keymap.InputTextCommand('|')
+    keymap_global['U3-N']          = keymap.InputTextCommand('^') # USキーボードの位置から
+    keymap_global['U3-M']          = keymap.InputTextCommand('$') # Vimのことを考えると^の右に$が欲しい
+    keymap_global['U3-Comma']      = keymap.InputTextCommand('{')
+    keymap_global['U3-Period']     = keymap.InputTextCommand('}')
+
+    ## 5段目 押しにくい記号
+    keymap_global['O-U3-(29)']  = keymap.InputTextCommand('`')
+    keymap_global['O-U3-Space'] = keymap.InputTextCommand('_')
+    keymap_global['O-U3-(28)']  = keymap.InputTextCommand('\\')
 
     # --------------------------------------------------------------------
     # フットスイッチ
