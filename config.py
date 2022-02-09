@@ -388,6 +388,7 @@ def configure(keymap):
     keymap_browser['U0-M'] = 'A-Left'
     keymap_browser['U0-Comma'] = 'A-Right'
     keymap_browser['U0-Period'] = 'C-R'
+    keymap_browser['U0-Slash'] = 'C-L'
     keymap_browser['U0-I'] = 'C-L'
 
     # mintty
@@ -464,3 +465,4 @@ def configure(keymap):
     keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
     keymap_windows_terminal['U0-C'] = 'C-S-Tab'
     keymap_windows_terminal['U0-V'] = 'C-Tab'
+    keymap_windows_terminal['U0-Slash'] = 'C-S-P'
