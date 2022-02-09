@@ -457,5 +457,10 @@ def configure(keymap):
     keymap_cura['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
 
     # GnuCash
-    keymap_cura = keymap.defineWindowKeymap(exe_name='gnucash.exe')
-    keymap_cura['C-V'] = 'S-Insert' # Ctrlのショートカットキーが効かないのでCtrl-Vの代わりにShift-Insertを入力する
+    keymap_gnucash = keymap.defineWindowKeymap(exe_name='gnucash.exe')
+    keymap_gnucash['C-V'] = 'S-Insert' # Ctrlのショートカットキーが効かないのでCtrl-Vの代わりにShift-Insertを入力する
+
+    # Windows Terminal
+    keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
+    keymap_windows_terminal['U0-C'] = 'C-S-Tab'
+    keymap_windows_terminal['U0-V'] = 'C-Tab'
