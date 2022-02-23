@@ -1,6 +1,8 @@
 DIRS := \
 	$(shell which cygpath > /dev/null 2>&1 && cygpath "${APPDATA}\\keyhac") \
-	$(shell which cygpath > /dev/null 2>&1 && cygpath "\\app\\keyhac")
+	$(shell which wslpath > /dev/null 2>&1 && wslpath "$(shell wslvar APPDATA)\\keyhac") \
+	$(shell which cygpath > /dev/null 2>&1 && cygpath "\\app\\keyhac") \
+	/mnt/c/app/keyhac
 DIRS := $(foreach dir,$(DIRS),$(shell [ -d $(dir) ] && echo $(dir)))
 DIR := $(word 1, $(DIRS))
 $(if $(DIR), ,$(error The installation directory is not found))
