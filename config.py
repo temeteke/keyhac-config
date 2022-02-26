@@ -162,6 +162,9 @@ def configure(keymap):
     # アプリケーションで上書きされることもあるキー
     keymap_global['U0-X'] = 'C-W' # 閉じる
     keymap_global['U0-Z'] = 'C-Z' # 戻る
+    keymap_global['U0-C'] = 'Up', 'End', 'S-Home' # 上の行を選択
+    keymap_global['U0-V'] = 'Home', 'S-End', 'S-Right' # 現在の行を選択
+
 
     # --------------------------------------------------------------------
     # 無変換/変換
@@ -204,6 +207,16 @@ def configure(keymap):
     keymap_global['RU1-O'] = 'S-End', 'Delete'
     keymap_global['LU1-A'] = 'S-Home', 'Back'
     keymap_global['LU1-G'] = 'S-End', 'Delete'
+
+    # 変換を押していれば行削除
+    keymap_global['RU1-J'] = 'Home', 'S-End', 'Delete', 'Delete' # 現在の行を削除
+    keymap_global['RU1-K'] = 'Left', 'Home', 'S-End', 'Delete', 'Delete' # 上の行を削除
+
+    # ターミナルではCtrlの機能が変わるため無変換でショートカットを入力できるようにする アプリケーションによっては上書きする
+    keymap_global['LU1-Z'] = 'C-Z'
+    keymap_global['LU1-X'] = 'C-X'
+    keymap_global['LU1-C'] = 'C-C'
+    keymap_global['LU1-V'] = 'C-V'
 
     # モニター間の移動
     keymap_global['LU1-E'] = 'W-Up'
@@ -266,14 +279,6 @@ def configure(keymap):
     # スペースと無変換/変換を同時に押していれば行を連結
     keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
     keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
-
-    # クリップボード
-    def paste_clipboard_text():
-        keymap.wnd.setImeStatus(0) # IMEオフにする
-        keymap.InputTextCommand(getClipboardText().strip())()
-
-    keymap_global['U0-V'] = lambda: paste_clipboard_text()  # プレーンテキストとして貼り付け
-    keymap_global['LU1-V'] = 'W-V' # クリップボードの履歴を表示
 
     # --------------------------------------------------------------------
     # セミコロン
@@ -465,4 +470,10 @@ def configure(keymap):
     keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
     keymap_windows_terminal['U0-C'] = 'C-S-Tab'
     keymap_windows_terminal['U0-V'] = 'C-Tab'
-    keymap_windows_terminal['U0-Slash'] = 'C-S-P'
+    keymap_windows_terminal['U0-Slash'] = 'C-S-P' # コマンドパレット
+    keymap_windows_terminal['LU1-C'] = 'C-Insert' # コピー
+    keymap_windows_terminal['LU1-V'] = 'S-Insert' # 貼り付け
+    keymap_windows_terminal['RU1-U'] = 'C-U'
+    keymap_windows_terminal['RU1-O'] = 'C-O'
+    keymap_windows_terminal['LU1-A'] = 'C-U'
+    keymap_windows_terminal['LU1-G'] = 'C-O'
