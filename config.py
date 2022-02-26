@@ -160,8 +160,8 @@ def configure(keymap):
     keymap_global['U0-Right'] = 'End'
 
     # アプリケーションで上書きされることもあるキー
-    keymap_global['U0-X'] = 'C-W' # 閉じる
     keymap_global['U0-Z'] = 'C-Z' # 戻る
+    keymap_global['U0-X'] = 'C-W' # 閉じる
     keymap_global['U0-C'] = 'Up', 'End', 'S-Home' # 上の行を選択
     keymap_global['U0-V'] = 'Home', 'S-End', 'S-Right' # 現在の行を選択
 
@@ -468,8 +468,11 @@ def configure(keymap):
 
     # Windows Terminal
     keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
+    keymap_windows_terminal['U0-Z'] = lambda: None
+    keymap_windows_terminal['U0-X'] = 'C-S-W'
     keymap_windows_terminal['U0-C'] = 'C-S-Tab'
     keymap_windows_terminal['U0-V'] = 'C-Tab'
+    keymap_windows_terminal['U0-N'] = 'C-S-T' # 新しいタブ
     keymap_windows_terminal['U0-Slash'] = 'C-S-P' # コマンドパレット
     keymap_windows_terminal['LU1-C'] = 'C-Insert' # コピー
     keymap_windows_terminal['LU1-V'] = 'S-Insert' # 貼り付け
@@ -477,3 +480,9 @@ def configure(keymap):
     keymap_windows_terminal['RU1-O'] = 'C-O'
     keymap_windows_terminal['LU1-A'] = 'C-U'
     keymap_windows_terminal['LU1-G'] = 'C-O'
+
+    # Visual Studio Code
+    keymap_vsc = keymap.defineWindowKeymap(exe_name='Code.exe')
+    keymap_vsc['U0-C'] = 'C-S-Tab'
+    keymap_vsc['U0-V'] = 'C-Tab'
+    keymap_vsc['U0-Slash'] = 'C-S-P' # コマンドパレット
