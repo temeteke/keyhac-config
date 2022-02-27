@@ -259,13 +259,6 @@ def configure(keymap):
 
     # スペースと無変換/変換を同時に押していれば選択する
     for mod_key in MOD_KEYS_COMBS:
-        ## 右手
-        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
-        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
-        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
-        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
-        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
-        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
         ## 左手
         keymap_global[mod_key + 'U0-U1-E'] = mod_key + 'S-Up'
         keymap_global[mod_key + 'U0-U1-S'] = mod_key + 'S-Left'
@@ -275,6 +268,13 @@ def configure(keymap):
         keymap_global[mod_key + 'U0-U1-G'] = mod_key + 'S-End'
         keymap_global[mod_key + 'U0-U1-W'] = mod_key + 'S-PageUp'
         keymap_global[mod_key + 'U0-U1-R'] = mod_key + 'S-PageDown'
+        ## 右手
+        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
+        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
+        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
+        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
+        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
+        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
 
     # スペースと無変換/変換を同時に押していれば行を連結
     keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
@@ -398,10 +398,27 @@ def configure(keymap):
 
     # mintty
     keymap_mintty = keymap.defineWindowKeymap(exe_name='mintty.exe')
-    keymap_mintty['RU1-U'] = 'C-U'
-    keymap_mintty['RU1-O'] = 'C-O'
+    keymap_mintty['LU1-C'] = 'C-Insert' # コピー
+    keymap_mintty['LU1-V'] = 'S-Insert' # 貼り付け
     keymap_mintty['LU1-A'] = 'C-U'
     keymap_mintty['LU1-G'] = 'C-O'
+    keymap_mintty['RU1-U'] = 'C-U'
+    keymap_mintty['RU1-O'] = 'C-O'
+
+    # Windows Terminal
+    keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
+    keymap_windows_terminal['U0-Z'] = lambda: None
+    keymap_windows_terminal['U0-X'] = 'C-S-W'
+    keymap_windows_terminal['U0-C'] = 'C-S-Tab'
+    keymap_windows_terminal['U0-V'] = 'C-Tab'
+    keymap_windows_terminal['U0-N'] = 'C-S-T' # 新しいタブ
+    keymap_windows_terminal['U0-Slash'] = 'C-S-P' # コマンドパレット
+    keymap_windows_terminal['LU1-C'] = 'C-Insert' # コピー
+    keymap_windows_terminal['LU1-V'] = 'S-Insert' # 貼り付け
+    keymap_windows_terminal['LU1-A'] = 'C-U'
+    keymap_windows_terminal['LU1-G'] = 'C-O'
+    keymap_windows_terminal['RU1-U'] = 'C-U'
+    keymap_windows_terminal['RU1-O'] = 'C-O'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
@@ -465,21 +482,6 @@ def configure(keymap):
     # GnuCash
     keymap_gnucash = keymap.defineWindowKeymap(exe_name='gnucash.exe')
     keymap_gnucash['C-V'] = 'S-Insert' # Ctrlのショートカットキーが効かないのでCtrl-Vの代わりにShift-Insertを入力する
-
-    # Windows Terminal
-    keymap_windows_terminal = keymap.defineWindowKeymap(exe_name='WindowsTerminal.exe')
-    keymap_windows_terminal['U0-Z'] = lambda: None
-    keymap_windows_terminal['U0-X'] = 'C-S-W'
-    keymap_windows_terminal['U0-C'] = 'C-S-Tab'
-    keymap_windows_terminal['U0-V'] = 'C-Tab'
-    keymap_windows_terminal['U0-N'] = 'C-S-T' # 新しいタブ
-    keymap_windows_terminal['U0-Slash'] = 'C-S-P' # コマンドパレット
-    keymap_windows_terminal['LU1-C'] = 'C-Insert' # コピー
-    keymap_windows_terminal['LU1-V'] = 'S-Insert' # 貼り付け
-    keymap_windows_terminal['RU1-U'] = 'C-U'
-    keymap_windows_terminal['RU1-O'] = 'C-O'
-    keymap_windows_terminal['LU1-A'] = 'C-U'
-    keymap_windows_terminal['LU1-G'] = 'C-O'
 
     # Visual Studio Code
     keymap_vsc = keymap.defineWindowKeymap(exe_name='Code.exe')
