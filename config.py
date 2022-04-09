@@ -53,6 +53,15 @@ def configure(keymap):
     KEY_FOOT_RIGHT  = f'({VK_FOOT_RIGHT})'
 
     # --------------------------------------------------------------------
+    # 特定のキーにマッピングするキーのリスト
+    # EnterとEscapeにマッピングしたキーは他の処理で必要なのでリストを作りまとめてマッピングする
+
+    keys = {
+        'Enter': [],
+        'Escape': []
+    }
+
+    # --------------------------------------------------------------------
     # キーマップ
 
     keymap_global = keymap.defineWindowKeymap()
@@ -101,8 +110,8 @@ def configure(keymap):
         keymap_global[mod_key + 'U0-L'] = mod_key + 'Right'
         keymap_global[mod_key + 'U0-U'] = mod_key + 'Home'
         keymap_global[mod_key + 'U0-O'] = mod_key + 'End'
-        keymap_global[mod_key + 'U0-P'] = mod_key + 'Enter'
-        keymap_global[mod_key + 'U0-Y'] = mod_key + 'Esc'
+        keys['Enter'].append('U0-P')
+        keys['Escape'].append('U0-Y')
 
         # 左手
         keymap_global[mod_key + 'U0-E'] = mod_key + 'Up'
@@ -113,8 +122,8 @@ def configure(keymap):
         keymap_global[mod_key + 'U0-G'] = mod_key + 'End'
         keymap_global[mod_key + 'U0-W'] = mod_key + 'PageUp'
         keymap_global[mod_key + 'U0-R'] = mod_key + 'PageDown'
-        keymap_global[mod_key + 'U0-T'] = mod_key + 'Enter'
-        keymap_global[mod_key + 'U0-Q'] = mod_key + 'Esc'
+        keys['Enter'].append('U0-T')
+        keys['Escape'].append('U0-Q')
 
         # 両手で対称
         keymap_global[mod_key + 'U0-Tab']    = mod_key + 'Back'
@@ -123,16 +132,6 @@ def configure(keymap):
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
     keymap_global['U0-Colon'] = 'A-Space'
-
-    # ウィンドウ切替
-    keymap_global['O-U0-LShift'] = 'D-Alt', 'Tab'
-    keymap_global['O-U0-RShift'] = 'D-Alt', 'Tab'
-    keymap_global['U0-BackSlash'] = 'D-Alt', 'Tab'
-    keymap_global['O-S-U0-LShift'] = 'D-Alt', 'S-Tab'
-    keymap_global['O-S-U0-RShift'] = 'D-Alt', 'S-Tab'
-    keymap_global['S-U0-BackSlash'] = 'D-Alt', 'S-Tab'
-    keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
-    keymap_mvf['U-Space'] = 'U-Alt' # スペースを離したら確定する
 
     # 入力補助
     keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
@@ -370,6 +369,29 @@ def configure(keymap):
     keymap_global['U2-Subtract'] = 'PageUp'
     keymap_global['U2-Add'] = 'PageDown'
     keymap_global['U2-Multiply'] = 'End'
+
+    # --------------------------------------------------------------------
+    # 機能観点
+
+    # ウィンドウ切替
+    ## 左
+    keymap_global['U0-LShift']    = 'D-Alt', 'S-Tab'
+    keymap_global['S-U0-LShift']  = 'D-Alt', 'S-Tab'
+    ## 右
+    keymap_global['U0-RShift']    = 'D-Alt', 'Tab' # Alt+Shiftが実行されないようにしたいがやり方がわからない
+    keymap_global['S-U0-RShift']  = 'D-Alt', 'Tab' # Alt+Shiftが実行されないようにしたいがやり方がわからない
+    keymap_global['U0-BackSlash'] = 'D-Alt', 'Tab'
+    ## 確定時にAltのKeyUpを発生させる
+    keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
+    for key in ['U-Space'] + keys['Enter'] + keys['Escape']:
+        keymap_mvf[key] = 'U-Alt'
+
+    # --------------------------------------------------------------------
+    # Enter, Escapeのマッピング
+    for mod_key in MOD_KEYS_COMBS:
+        for key, key_list in keys.items():
+            for k in key_list:
+                keymap_global[mod_key + k] = mod_key + key
 
     # --------------------------------------------------------------------
     # アプリケーション別の設定
