@@ -221,7 +221,7 @@ def configure(keymap):
     keymap_global['LU1-C'] = 'C-C'
     keymap_global['LU1-V'] = 'C-V'
 
-    # モニター間の移動
+    # ウィンドウの移動
     keymap_global['LU1-E'] = 'W-Up'
     keymap_global['LU1-S'] = 'W-Left'
     keymap_global['LU1-D'] = 'W-Down'
@@ -282,6 +282,14 @@ def configure(keymap):
     # スペースと無変換/変換を同時に押していれば行を連結
     keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
     keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
+
+    # 仮想デスクトップ
+    keymap_global['U0-U1-BackSlash'] = 'W-C-D'
+    keymap_global['U0-U1-S-BackSlash'] = 'W-C-F4'
+    keymap_global['O-U1-LShift'] = 'W-C-Left'
+    keymap_global['O-U1-RShift'] = 'W-C-Right'
+    keymap_global['LU1-BackSlash'] = 'W-C-Right'
+    keymap_global['RU1-BackSlash'] = 'W-C-Right'
 
     # --------------------------------------------------------------------
     # セミコロン
