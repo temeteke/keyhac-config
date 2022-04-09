@@ -122,12 +122,15 @@ def configure(keymap):
 
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
+    keymap_global['U0-Colon'] = 'A-Space'
 
     # ウィンドウ切替
     keymap_global['O-U0-LShift'] = 'D-Alt', 'Tab'
     keymap_global['O-U0-RShift'] = 'D-Alt', 'Tab'
-    keymap_global['O-LU0-RS-LShift'] = 'D-Alt', 'S-Tab'
-    keymap_global['O-LU0-LS-RShift'] = 'D-Alt', 'S-Tab'
+    keymap_global['U0-BackSlash'] = 'D-Alt', 'Tab'
+    keymap_global['O-S-U0-LShift'] = 'D-Alt', 'S-Tab'
+    keymap_global['O-S-U0-RShift'] = 'D-Alt', 'S-Tab'
+    keymap_global['S-U0-BackSlash'] = 'D-Alt', 'S-Tab'
     keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
     keymap_mvf['U-Space'] = 'U-Alt' # スペースを離したら確定する
 
