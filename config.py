@@ -67,14 +67,6 @@ def configure(keymap):
     keymap_global = keymap.defineWindowKeymap()
 
     # --------------------------------------------------------------------
-    # 標準のモディファイアキーのワンショット
-
-    keymap_global['O-LCtrl'] = 'Esc'
-    #誤爆が多いので無効化
-    #keymap_global['O-LShift'] = 'W-Tab'
-    #keymap_global['O-RShift'] = 'W-D'
-
-    # --------------------------------------------------------------------
     # ユーザモディファイアキーの定義
 
     ## スペース
