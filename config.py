@@ -196,23 +196,9 @@ def configure(keymap):
         keymap_global[mod_key + 'RU1-J'] = mod_key + 'PageDown'
         keymap_global[mod_key + 'RU1-K'] = mod_key + 'PageUp'
 
-        # 無変換/変換を押していればBack/Deleteを反転
-        keymap_global[mod_key + 'LU1-Tab']    = mod_key + 'Delete'
-        keymap_global[mod_key + 'RU1-Atmark'] = mod_key + 'Back'
-
     # 無変換/変換でIMEを切替
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
     keymap_global['O-(28)'] = lambda: keymap.wnd.setImeStatus(1)
-
-    # 無変換/変換を押していれば削除
-    keymap_global['RU1-U'] = 'S-Home', 'Back'
-    keymap_global['RU1-O'] = 'S-End', 'Delete'
-    keymap_global['LU1-A'] = 'S-Home', 'Back'
-    keymap_global['LU1-G'] = 'S-End', 'Delete'
-
-    # 変換を押していれば行削除
-    keymap_global['RU1-J'] = 'Home', 'S-End', 'Delete', 'Delete' # 現在の行を削除
-    keymap_global['RU1-K'] = 'Left', 'Home', 'S-End', 'Delete', 'Delete' # 上の行を削除
 
     # ターミナルではCtrlの機能が変わるため無変換でショートカットを入力できるようにする アプリケーションによっては上書きする
     keymap_global['LU1-Z'] = 'C-Z'
@@ -255,40 +241,6 @@ def configure(keymap):
 
     for i in range(4):
         keymap_global[f'LU1-{i+1}'] = mouse_move_between_monitor_command(i)
-
-    # --------------------------------------------------------------------
-    # スペース, 無変換/変換
-
-    # スペースと無変換/変換を同時に押していれば選択する
-    for mod_key in MOD_KEYS_COMBS:
-        ## 左手
-        keymap_global[mod_key + 'U0-U1-E'] = mod_key + 'S-Up'
-        keymap_global[mod_key + 'U0-U1-S'] = mod_key + 'S-Left'
-        keymap_global[mod_key + 'U0-U1-D'] = mod_key + 'S-Down'
-        keymap_global[mod_key + 'U0-U1-F'] = mod_key + 'S-Right'
-        keymap_global[mod_key + 'U0-U1-A'] = mod_key + 'S-Home'
-        keymap_global[mod_key + 'U0-U1-G'] = mod_key + 'S-End'
-        keymap_global[mod_key + 'U0-U1-W'] = mod_key + 'S-PageUp'
-        keymap_global[mod_key + 'U0-U1-R'] = mod_key + 'S-PageDown'
-        ## 右手
-        keymap_global[mod_key + 'U0-U1-H'] = mod_key + 'S-Left'
-        keymap_global[mod_key + 'U0-U1-J'] = mod_key + 'S-Down'
-        keymap_global[mod_key + 'U0-U1-K'] = mod_key + 'S-Up'
-        keymap_global[mod_key + 'U0-U1-L'] = mod_key + 'S-Right'
-        keymap_global[mod_key + 'U0-U1-U'] = mod_key + 'S-Home'
-        keymap_global[mod_key + 'U0-U1-O'] = mod_key + 'S-End'
-
-    # スペースと無変換/変換を同時に押していれば行を連結
-    keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
-    keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
-
-    # 仮想デスクトップ
-    keymap_global['U0-U1-BackSlash'] = 'W-C-D'
-    keymap_global['U0-U1-S-BackSlash'] = 'W-C-F4'
-    keymap_global['O-U1-LShift'] = 'W-C-Left'
-    keymap_global['O-U1-RShift'] = 'W-C-Right'
-    keymap_global['LU1-BackSlash'] = 'W-C-Right'
-    keymap_global['RU1-BackSlash'] = 'W-C-Right'
 
     # --------------------------------------------------------------------
     # セミコロン
@@ -373,6 +325,23 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # 機能観点
 
+    # テキスト編集
+    ## 単語削除
+    keymap_global['U0-U1-H'] = 'C-Back'
+    keymap_global['U0-U1-L'] = 'C-Delete'
+    ## 行頭、行末まで削除
+    keymap_global['RU1-U'] = 'S-Home', 'Back'
+    keymap_global['RU1-O'] = 'S-End', 'Delete'
+    keymap_global['LU1-A'] = 'S-Home', 'Back'
+    keymap_global['LU1-G'] = 'S-End', 'Delete'
+    ## 行削除
+    keymap_global['U1-Tab']    = 'Left', 'Home', 'S-End', 'Delete', 'Delete' # 上の行を削除
+    keymap_global['LU1-Atmark'] = 'Home', 'S-End', 'Delete', 'Delete' # 現在の行を削除 左右別に定義必要だった
+    keymap_global['RU1-Atmark'] = 'Home', 'S-End', 'Delete', 'Delete' # 現在の行を削除 左右別に定義必要だった
+    ## 行連結
+    keymap_global['U0-U1-Tab']    = 'Home', 'Back', 'Home'
+    keymap_global['U0-U1-Atmark'] = 'End', 'Delete', 'End'
+
     # ウィンドウ切替
     ## 左
     keymap_global['U0-LShift']    = 'D-Alt', 'S-Tab'
@@ -385,6 +354,14 @@ def configure(keymap):
     keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
     for key in ['U-Space'] + keys['Enter'] + keys['Escape']:
         keymap_mvf[key] = 'U-Alt'
+
+    # 仮想デスクトップ
+    keymap_global['U0-U1-BackSlash'] = 'W-C-D'
+    keymap_global['U0-U1-S-BackSlash'] = 'W-C-F4'
+    keymap_global['O-U1-LShift'] = 'W-C-Left'
+    keymap_global['O-U1-RShift'] = 'W-C-Right'
+    keymap_global['LU1-BackSlash'] = 'W-C-Right'
+    keymap_global['RU1-BackSlash'] = 'W-C-Right'
 
     # --------------------------------------------------------------------
     # Enter, Escapeのマッピング
