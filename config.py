@@ -300,7 +300,7 @@ def configure(keymap):
     # フットスイッチとテンキー
     keymap_global['U2-Num0'] = 'Insert'
     keymap_global['U2-Num1'] = 'Left', 'Down'
-    keymap_global['U2-Num2'] = 'Down', 'Esc'
+    keymap_global['U2-Num2'] = 'Down'
     keymap_global['U2-Num3'] = 'Right', 'Down'
     keymap_global['U2-Num4'] = 'Left'
     keymap_global['U2-Num5'] = 'Space'
