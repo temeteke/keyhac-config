@@ -54,11 +54,12 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
     # 特定のキーにマッピングするキーのリスト
-    # EnterとEscapeにマッピングしたキーは他の処理で必要なのでリストを作りまとめてマッピングする
+    # Enter,Escape,Backにマッピングしたキーは他の処理で必要なのでリストを作りまとめてマッピングする
 
     keys = {
         'Enter': [],
-        'Escape': []
+        'Escape': [],
+        'Back': []
     }
 
     # --------------------------------------------------------------------
@@ -118,7 +119,7 @@ def configure(keymap):
         keys['Escape'].append('U0-Q')
 
         # 両手で対称
-        keymap_global[mod_key + 'U0-Tab']    = mod_key + 'Back'
+        keys['Back'].append('U0-Tab')
         keymap_global[mod_key + 'U0-Atmark'] = mod_key + 'Delete'
 
     # ランチャー(PowerToys Run)
@@ -181,7 +182,7 @@ def configure(keymap):
             keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
 
         # 無変換/変換を押していれば削除
-        keymap_global[mod_key + 'RU1-H'] = mod_key + 'Back'
+        keys['Back'].append('RU1-H')
         keymap_global[mod_key + 'RU1-L'] = mod_key + 'Delete'
 
         # 無変換/変換を押していれば大きく移動
@@ -356,7 +357,7 @@ def configure(keymap):
     keymap_global['RU1-BackSlash'] = 'W-C-Right'
 
     # --------------------------------------------------------------------
-    # Enter, Escapeのマッピング
+    # Enter, Escape, Backのマッピング
     for mod_key in MOD_KEYS_COMBS:
         for key, key_list in keys.items():
             for k in key_list:
@@ -421,6 +422,10 @@ def configure(keymap):
     keymap_windows_terminal['LU1-G'] = 'C-O'
     keymap_windows_terminal['RU1-U'] = 'C-U'
     keymap_windows_terminal['RU1-O'] = 'C-O'
+    ## 単語削除 C-BackがC-Hになってしまい.inputrcで別々に変更できないため、keyhacで変更する
+    for key in ['Back'] + keys['Back']:
+        keymap_windows_terminal['C-' + key] = 'C-W'
+    keymap_windows_terminal['U0-U1-H'] = 'C-W'
 
     # VLC
     keymap_vlc = keymap.defineWindowKeymap(exe_name='vlc.exe')
