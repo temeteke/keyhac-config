@@ -337,11 +337,9 @@ def configure(keymap):
 
     # ウィンドウ切替
     ## 左
-    keymap_global['U0-LShift']    = 'D-Alt', 'S-Tab'
-    keymap_global['S-U0-LShift']  = 'D-Alt', 'S-Tab'
+    keymap_global['O-U0-LShift']  = 'D-Alt', 'S-Tab' # Alt+Shiftが実行されないようにしたいがやり方がわからない
     ## 右
-    keymap_global['U0-RShift']    = 'D-Alt', 'Tab' # Alt+Shiftが実行されないようにしたいがやり方がわからない
-    keymap_global['S-U0-RShift']  = 'D-Alt', 'Tab' # Alt+Shiftが実行されないようにしたいがやり方がわからない
+    keymap_global['O-U0-RShift']  = 'D-Alt', 'Tab'   # Alt+Shiftが実行されないようにしたいがやり方がわからない
     keymap_global['U0-BackSlash'] = 'D-Alt', 'Tab'
     ## 確定時にAltのKeyUpを発生させる
     keymap_mvf = keymap.defineWindowKeymap(exe_name='explorer.exe', class_name='MultitaskingViewFrame')
