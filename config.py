@@ -53,13 +53,36 @@ def configure(keymap):
     KEY_FOOT_RIGHT  = f'({VK_FOOT_RIGHT})'
 
     # --------------------------------------------------------------------
-    # 特定のキーにマッピングするキーのリスト
-    # Enter,Escape,Backにマッピングしたキーは他の処理で必要なのでリストを作りまとめてマッピングする
+    # デフォルトのモディファイアキーと組み合わせて押すキー
+    # リストを作り最後にまとめてマッピングする
 
     keys = {
+        'F1': [],
+        'F2': [],
+        'F3': [],
+        'F4': [],
+        'F5': [],
+        'F6': [],
+        'F7': [],
+        'F8': [],
+        'F9': [],
+        'F10': [],
+        'F11': [],
+        'F12': [],
+        'Left': [],
+        'Up': [],
+        'Right': [],
+        'Down': [],
+        'Space': [],
+        'Back': [],
         'Enter': [],
         'Escape': [],
-        'Back': []
+        'Insert': [],
+        'Delete': [],
+        'Home': [],
+        'End': [],
+        'PageUp': [],
+        'PageDown': [],
     }
 
     # --------------------------------------------------------------------
@@ -84,43 +107,47 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # スペース
 
-    for mod_key in MOD_KEYS_COMBS:
-        # ワンショット
-        keymap_global['O-' + mod_key + 'Space'] = mod_key + 'Space'
-        keymap_global['O-' + mod_key + 'U1-Space'] = mod_key + 'Space'
+    # スペース
+    keys['Space'].append('U0-B')
+    keys['Space'].append('O-Space')
+    keys['Space'].append('O-U1-Space')
 
-        # スペース
-        keymap_global[mod_key + 'U0-B'] = mod_key + 'Space'
+    # ファンクションキー
+    for i, key in enumerate([str(x) for x in range(1, 10)] + ['0', 'Minus', 'Caret'], start=1):
+        keys['F' + str(i)].append('U0-' + key)
 
-        # ファンクションキー
-        for i, key in enumerate([str(x) for x in range(1, 10)] + ['0', 'Minus', 'Caret'], start=1):
-            keymap_global[mod_key + 'U0-' + key] = mod_key + 'F' + str(i)
+    # 右手
+    keys['Left'  ].append('U0-H')
+    keys['Down'  ].append('U0-J')
+    keys['Up'    ].append('U0-K')
+    keys['Right' ].append('U0-L')
+    keys['Home'  ].append('U0-U')
+    keys['End'   ].append('U0-O')
+    keys['Enter' ].append('U0-P')
+    keys['Escape'].append('U0-Y')
 
-        # 右手
-        keymap_global[mod_key + 'U0-H'] = mod_key + 'Left'
-        keymap_global[mod_key + 'U0-J'] = mod_key + 'Down'
-        keymap_global[mod_key + 'U0-K'] = mod_key + 'Up'
-        keymap_global[mod_key + 'U0-L'] = mod_key + 'Right'
-        keymap_global[mod_key + 'U0-U'] = mod_key + 'Home'
-        keymap_global[mod_key + 'U0-O'] = mod_key + 'End'
-        keys['Enter'].append('U0-P')
-        keys['Escape'].append('U0-Y')
+    # 左手
+    keys['Up'      ].append('U0-E')
+    keys['Left'    ].append('U0-S')
+    keys['Down'    ].append('U0-D')
+    keys['Right'   ].append('U0-F')
+    keys['Home'    ].append('U0-A')
+    keys['End'     ].append('U0-G')
+    keys['PageUp'  ].append('U0-W')
+    keys['PageDown'].append('U0-R')
+    keys['Enter'   ].append('U0-T')
+    keys['Escape'  ].append('U0-Q')
 
-        # 左手
-        keymap_global[mod_key + 'U0-E'] = mod_key + 'Up'
-        keymap_global[mod_key + 'U0-S'] = mod_key + 'Left'
-        keymap_global[mod_key + 'U0-D'] = mod_key + 'Down'
-        keymap_global[mod_key + 'U0-F'] = mod_key + 'Right'
-        keymap_global[mod_key + 'U0-A'] = mod_key + 'Home'
-        keymap_global[mod_key + 'U0-G'] = mod_key + 'End'
-        keymap_global[mod_key + 'U0-W'] = mod_key + 'PageUp'
-        keymap_global[mod_key + 'U0-R'] = mod_key + 'PageDown'
-        keys['Enter'].append('U0-T')
-        keys['Escape'].append('U0-Q')
+    # 両手で対称
+    keys['Back'  ].append('U0-Tab')
+    keys['Delete'].append('U0-Atmark')
 
-        # 両手で対称
-        keys['Back'].append('U0-Tab')
-        keymap_global[mod_key + 'U0-Atmark'] = mod_key + 'Delete'
+    # 矢印キー
+    keys['PageUp'  ].append('U0-Up')
+    keys['PageDown'].append('U0-Down')
+    keys['Home'    ].append('U0-Left')
+    keys['End'     ].append('U0-Right')
+
 
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
@@ -147,12 +174,6 @@ def configure(keymap):
     keymap_global['U0-Semicolon']['Period'] = 'S-Comma', 'S-Period', 'Left'
     ## クリップボード
     keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
-
-    # 矢印キー
-    keymap_global['U0-Up']    = 'PageUp'
-    keymap_global['U0-Down']  = 'PageDown'
-    keymap_global['U0-Left']  = 'Home'
-    keymap_global['U0-Right'] = 'End'
 
     # アプリケーションで上書きされることもあるキー
     keymap_global['U0-Z'] = 'C-Z' # 戻る
@@ -181,13 +202,13 @@ def configure(keymap):
         for key in ('Minus', 'Caret', 'Yen', 'Atmark', 'OpenBracket', 'Plus', 'Colon', 'CloseBracket', 'Comma', 'Period', 'Slash', 'Underscore'):
             keymap_global[mod_key + 'LU1-' + key] = mod_key + 'S-' + key
 
-        # 無変換/変換を押していれば削除
-        keys['Back'].append('RU1-H')
-        keymap_global[mod_key + 'RU1-L'] = mod_key + 'Delete'
+    # 無変換/変換を押していれば削除
+    keys['Back'  ].append('RU1-H')
+    keys['Delete'].append('RU1-L')
 
-        # 無変換/変換を押していれば大きく移動
-        keymap_global[mod_key + 'RU1-J'] = mod_key + 'PageDown'
-        keymap_global[mod_key + 'RU1-K'] = mod_key + 'PageUp'
+    # 無変換/変換を押していれば大きく移動
+    keys['PageDown'].append('RU1-J')
+    keys['PageUp'  ].append('RU1-K')
 
     # 無変換/変換でIMEを切替
     keymap_global['O-(29)'] = lambda: keymap.wnd.setImeStatus(0)
@@ -299,21 +320,21 @@ def configure(keymap):
         keymap_global['U2-' + x] = 'S-' + x
 
     # フットスイッチとテンキー
-    keymap_global['U2-Num0'] = 'Insert'
+    keys['Insert'  ].append('U2-Num0')
+    keys['Down'    ].append('U2-Num2')
+    keys['Left'    ].append('U2-Num4')
+    keys['Space'   ].append('U2-Num5')
+    keys['Right'   ].append('U2-Num6')
+    keys['Up'      ].append('U2-Num8')
+    keys['Delete'  ].append('U2-Decimal')
+    keys['Home'    ].append('U2-Divide')
+    keys['PageUp'  ].append('U2-Subtract')
+    keys['PageDown'].append('U2-Add')
+    keys['End'     ].append('U2-Multiply')
     keymap_global['U2-Num1'] = 'Left', 'Down'
-    keymap_global['U2-Num2'] = 'Down'
     keymap_global['U2-Num3'] = 'Right', 'Down'
-    keymap_global['U2-Num4'] = 'Left'
-    keymap_global['U2-Num5'] = 'Space'
-    keymap_global['U2-Num6'] = 'Right'
     keymap_global['U2-Num7'] = 'Left', 'Up'
-    keymap_global['U2-Num8'] = 'Up'
     keymap_global['U2-Num9'] = 'Right', 'Up'
-    keymap_global['U2-Decimal'] = 'Delete'
-    keymap_global['U2-Divide'] = 'Home'
-    keymap_global['U2-Subtract'] = 'PageUp'
-    keymap_global['U2-Add'] = 'PageDown'
-    keymap_global['U2-Multiply'] = 'End'
 
     # --------------------------------------------------------------------
     # 機能観点
@@ -355,11 +376,18 @@ def configure(keymap):
     keymap_global['RU1-BackSlash'] = 'W-C-Right'
 
     # --------------------------------------------------------------------
-    # Enter, Escape, Backのマッピング
+    # デフォルトのモディファイアキーと組み合わせて押すキーのマッピング
     for mod_key in MOD_KEYS_COMBS:
-        for key, key_list in keys.items():
-            for k in key_list:
-                keymap_global[mod_key + k] = mod_key + key
+        for output_key, input_keys in keys.items():
+            for input_key in input_keys:
+                tokens = input_key.split('-')
+                if tokens[0] in ['D', 'U', 'O']:
+                    condition = tokens[0] + '-'
+                    input_key = '-'.join(tokens[1:])
+                else:
+                    condition = ''
+                    input_key = '-'.join(tokens)
+                keymap_global[condition + mod_key + input_key] = mod_key + output_key
 
     # --------------------------------------------------------------------
     # アプリケーション別の設定
