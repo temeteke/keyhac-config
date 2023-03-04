@@ -225,6 +225,10 @@ def configure(keymap):
     keymap_global['LU1-S'] = 'W-Left'
     keymap_global['LU1-D'] = 'W-Down'
     keymap_global['LU1-F'] = 'W-Right'
+    keymap_global['LU1-C-E'] = 'W-C-A-Up'
+    keymap_global['LU1-C-S'] = 'W-C-A-Left'
+    keymap_global['LU1-C-D'] = 'W-C-A-Down'
+    keymap_global['LU1-C-F'] = 'W-C-A-Right'
     keymap_global['LU1-W'] = 'W-S-Left'
     keymap_global['LU1-R'] = 'W-S-Right'
 
