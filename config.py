@@ -260,6 +260,20 @@ def configure(keymap):
     for i in range(4):
         keymap_global[f'LU1-{i+1}'] = mouse_move_between_monitor_command(i)
 
+    # FancyZonesのレイアウト変更
+    global fancy_zone_layout
+    fancy_zone_layout = 1
+    def fancy_zone_layout_change_command(step):
+        def run():
+            global fancy_zone_layout
+            fancy_zone_layout = (fancy_zone_layout + step - 1) % 9 + 1
+            keymap.InputKeyCommand('W-C-A-' + str(fancy_zone_layout))()
+        return run
+
+    keymap_global[f'LU1-Q'] = fancy_zone_layout_change_command(-1)  # なぜかQを押すとモディファイアキーがキャンセルされる
+    keymap_global[f'LU1-T'] = fancy_zone_layout_change_command(+1)
+
+
     # --------------------------------------------------------------------
     # セミコロン
 
