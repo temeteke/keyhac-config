@@ -101,8 +101,8 @@ def configure(keymap):
     ## フットスイッチ
     keymap.defineModifier(VK_FOOT_LEFT,  'LUser2') # 左
     keymap.defineModifier(VK_FOOT_RIGHT, 'RUser2') # 右
-    ## セミコロン
-    keymap.defineModifier('Semicolon', 'RUser3')
+    ## コロン
+    keymap.defineModifier('Colon', 'RUser3')
 
     # --------------------------------------------------------------------
     # スペース
@@ -117,14 +117,16 @@ def configure(keymap):
         keys['F' + str(i)].append('U0-' + key)
 
     # 右手
-    keys['Left'  ].append('U0-H')
-    keys['Down'  ].append('U0-J')
-    keys['Up'    ].append('U0-K')
-    keys['Right' ].append('U0-L')
-    keys['Home'  ].append('U0-U')
-    keys['End'   ].append('U0-O')
-    keys['Enter' ].append('U0-P')
-    keys['Escape'].append('U0-Y')
+    keys['Left'    ].append('U0-H')
+    keys['Down'    ].append('U0-J')
+    keys['Up'      ].append('U0-K')
+    keys['Right'   ].append('U0-L')
+    keys['Home'    ].append('U0-U')
+    keys['End'     ].append('U0-O')
+    keys['Enter'   ].append('U0-P')
+    keys['Escape'  ].append('U0-Y')
+    keys['PageUp'  ].append('U0-OpenBracket')
+    keys['PageDown'].append('U0-CloseBracket')
 
     # 左手
     keys['Up'      ].append('U0-E')
@@ -275,11 +277,11 @@ def configure(keymap):
 
 
     # --------------------------------------------------------------------
-    # セミコロン
+    # コロン
 
     ## ワンショット
     for mod_key in MOD_KEYS_COMBS:
-        keymap_global['O-' + mod_key + 'Semicolon'] = mod_key + 'Semicolon'
+        keymap_global['O-' + mod_key + 'Colon'] = mod_key + 'Colon'
 
     ## 1段目 USキーボードの配列
     keymap_global['U3-Esc'] = keymap.InputTextCommand('~')
@@ -295,12 +297,14 @@ def configure(keymap):
     keymap_global['U3-Tab'] = 'Minus'
 
     ## 3段目 数字
-    ### 0は左Ctrl
+    ### 左Ctrlは0
     keymap_global['D-U3-LCtrl']   = keymap.InputTextCommand('0') # 押されている間入力する
     keymap_global['D-C-U3-LCtrl'] = keymap.InputTextCommand('0') # 押されている間入力する
     ### 1-9
     for i, key in enumerate('ASDFGHJKL', start=1):
         keymap_global['U3-' + key] = str(i)
+    ### 0
+    keymap_global['U3-' + 'Semicolon'] = '0'
 
     ## 4段目 押しにくい記号
     keymap_global['D-U3-LShift']   = keymap.InputTextCommand('=') # 押されている間入力する
