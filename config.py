@@ -86,6 +86,116 @@ def configure(keymap):
     }
 
     # --------------------------------------------------------------------
+    # Pop List
+
+    def command_KeyhacMenuList():
+        # If the list window is already opened, just close it
+        if keymap.isListWindowOpened():
+            keymap.cancelListWindow()
+            return
+
+        def popListWindow():
+            items = [
+                ("Edit config.py",   keymap.command_EditConfig),
+                ("Reload config.py", keymap.command_ReloadConfig),
+            ]
+
+            listers = [
+                ("Keyhac Menu", cblister_FixedPhrase(items)),
+            ]
+
+            item, mod = keymap.popListWindow(listers)
+
+            if item:
+                item[1]()
+
+        # Because the blocking procedure cannot be executed in the key-hook,
+        # delayed-execute the procedure by delayedCall().
+        keymap.delayedCall(popListWindow, 0)
+
+    # --------------------------------------------------------------------
+    # クリップボード
+
+    # Add quote mark to current clipboard contents
+    def quoteClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            s += keymap.quote_mark + line
+        return s
+
+    # Indent current clipboard contents
+    def indentClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            if line.lstrip():
+                line = " " * 4 + line
+            s += line
+        return s
+
+    # Unindent current clipboard contents
+    def unindentClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            for i in range(4+1):
+                if i>=len(line) : break
+                if line[i]=='\t':
+                    i+=1
+                    break
+                if line[i]!=' ':
+                    break
+            s += line[i:]
+        return s
+
+    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
+    half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
+
+    # Convert to half-with characters
+    def toHalfWidthClipboardText():
+        s = getClipboardText()
+        s = s.translate(str.maketrans(full_width_chars,half_width_chars))
+        return s
+
+    # Convert to full-with characters
+    def toFullWidthClipboardText():
+        s = getClipboardText()
+        s = s.translate(str.maketrans(half_width_chars,full_width_chars))
+        return s
+
+    def command_CustomizedClipboardList():
+        # If the list window is already opened, just close it
+        if keymap.isListWindowOpened():
+            keymap.cancelListWindow()
+            return
+
+        def popListWindow():
+            items = [
+                ("Quote clipboard",    quoteClipboardText),
+                ("Indent clipboard",   indentClipboardText),
+                ("Unindent clipboard", unindentClipboardText),
+                ("To Half-Width",      toHalfWidthClipboardText),
+                ("To Full-Width",      toFullWidthClipboardText),
+            ]
+
+            listers = [
+                ("Customized Clipboard", cblister_FixedPhrase(items)),
+            ]
+
+            item, mod = keymap.popListWindow(listers)
+
+            if item:
+                item[1]()
+
+        # Because the blocking procedure cannot be executed in the key-hook,
+        # delayed-execute the procedure by delayedCall().
+        keymap.delayedCall(popListWindow, 0)
+
+    # --------------------------------------------------------------------
     # キーマップ
 
     keymap_global = keymap.defineWindowKeymap()
@@ -156,12 +266,15 @@ def configure(keymap):
     keymap_global['U0-Colon'] = 'A-Space'
 
     # 入力補助
-    keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap()
+    keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap(";=%Y/%m/%d :=%H:%M:%S j=%Y%m%d k=%H%M%S v=Clipboard m=KeyhacMenu 2=\"\" 7='' @=`` 8=() 9=() [=[] ]=[] {={} }={} ,=<> .=<>")
     ## 日時入力
     keymap_global['U0-Semicolon']['Semicolon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y/%m/%d'))()
     keymap_global['U0-Semicolon']['Colon'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H:%M:%S'))()
     keymap_global['U0-Semicolon']['J'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%Y%m%d'))()
     keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
+    ## リストウィンドウ
+    keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
+    keymap_global['U0-Semicolon']['M'] = command_KeyhacMenuList
     ## 括弧の入力
     keymap_global['U0-Semicolon']['2'] = 'S-2', 'S-2', 'Left'
     keymap_global['U0-Semicolon']['7'] = 'S-7', 'S-7', 'Left'
@@ -174,8 +287,7 @@ def configure(keymap):
     keymap_global['U0-Semicolon']['S-CloseBracket'] = 'S-OpenBracket', 'S-CloseBracket', 'Left'
     keymap_global['U0-Semicolon']['Comma']  = 'S-Comma', 'S-Period', 'Left'
     keymap_global['U0-Semicolon']['Period'] = 'S-Comma', 'S-Period', 'Left'
-    ## クリップボード
-    keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
+
 
     # アプリケーションで上書きされることもあるキー
     keymap_global['U0-Z'] = 'C-Z' # 戻る
@@ -543,3 +655,74 @@ def configure(keymap):
     keymap_vsc['U0-C'] = 'C-S-Tab'
     keymap_vsc['U0-V'] = 'C-Tab'
     keymap_vsc['U0-Slash'] = 'C-S-P' # コマンドパレット
+
+    # --------------------------------------------------------------------
+    # クリップボード
+
+    # Add quote mark to current clipboard contents
+    def quoteClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            s += keymap.quote_mark + line
+        return s
+
+    # Indent current clipboard contents
+    def indentClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            if line.lstrip():
+                line = " " * 4 + line
+            s += line
+        return s
+
+    # Unindent current clipboard contents
+    def unindentClipboardText():
+        s = getClipboardText()
+        lines = s.splitlines(True)
+        s = ""
+        for line in lines:
+            for i in range(4+1):
+                if i>=len(line) : break
+                if line[i]=='\t':
+                    i+=1
+                    break
+                if line[i]!=' ':
+                    break
+            s += line[i:]
+        return s
+
+    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
+    half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
+
+    # Convert to half-with characters
+    def toHalfWidthClipboardText():
+        s = getClipboardText()
+        s = s.translate(str.maketrans(full_width_chars,half_width_chars))
+        return s
+
+    # Convert to full-with characters
+    def toFullWidthClipboardText():
+        s = getClipboardText()
+        s = s.translate(str.maketrans(half_width_chars,full_width_chars))
+        return s
+
+    # Menu item list
+    other_items = [
+        ("Quote clipboard",    quoteClipboardText),
+        ("Indent clipboard",   indentClipboardText),
+        ("Unindent clipboard", unindentClipboardText),
+        ("To Half-Width",      toHalfWidthClipboardText),
+        ("To Full-Width",      toFullWidthClipboardText),
+        ("Edit config.py",     keymap.command_EditConfig),
+        ("Reload config.py",   keymap.command_ReloadConfig),
+    ]
+
+    # Clipboard history list extensions
+    keymap.cblisters += [
+        ("Others", cblister_FixedPhrase(other_items)),
+    ]
+
