@@ -11,7 +11,7 @@ $(if $(DIR), ,$(error The installation directory is not found))
 all:
 
 install: config.py
-	cp $+ $(DIR)
+	cp -a $+ $(DIR)
 
 uninstall:
-	rm $(DIR)/config.py
+	rm -f $(DIR)/config.py
