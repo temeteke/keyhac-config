@@ -638,7 +638,7 @@ def configure(keymap):
     keymap_fusion360['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
 
     # Cura
-    keymap_cura = keymap.defineWindowKeymap(exe_name='Cura.exe')
+    keymap_cura = keymap.defineWindowKeymap(exe_name='UltiMaker-Cura.exe')
     keymap_cura['O-' + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
     keymap_cura['D-' + KEY_FOOT_LEFT]  = 'D-RButton'
     keymap_cura['U-' + KEY_FOOT_LEFT]  = 'U-RButton'
