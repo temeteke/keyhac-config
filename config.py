@@ -628,7 +628,7 @@ def configure(keymap):
     keymap_gta5['D-Space'] = 'D-Space'
     keymap_gta5['U-Space'] = 'U-Space'
 
-    # Fusion 360
+    # Autodesk Fusion
     keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
     keymap_fusion360['O-' + KEY_FOOT_LEFT]  = lambda: None  # ワンショットモディファイアを無効化
     keymap_fusion360['D-' + KEY_FOOT_LEFT]  = 'D-S-MButton'
@@ -645,6 +645,15 @@ def configure(keymap):
     keymap_cura['O-' + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
     keymap_cura['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
     keymap_cura['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
+
+    # PrusaSlicer
+    keymap_prusa_slicer = keymap.defineWindowKeymap(exe_name='prusa-slicer.exe')
+    keymap_prusa_slicer['O-' + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
+    keymap_prusa_slicer['D-' + KEY_FOOT_LEFT]  = 'D-LButton'
+    keymap_prusa_slicer['U-' + KEY_FOOT_LEFT]  = 'U-LButton'
+    keymap_prusa_slicer['O-' + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
+    keymap_prusa_slicer['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
+    keymap_prusa_slicer['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
 
     # GnuCash
     keymap_gnucash = keymap.defineWindowKeymap(exe_name='gnucash.exe')
