@@ -10,6 +10,14 @@ from time import time
 
 
 def configure(keymap):
+    """
+    Keyhacのメイン設定関数。
+
+    カスタムモディファイアキー、キーマッピング、アプリケーション別設定を定義します。
+
+    Args:
+        keymap: keyhacのkeymapオブジェクト
+    """
     # --------------------------------------------------------------------
     # 定数の定義
 
@@ -19,17 +27,52 @@ def configure(keymap):
     for i in range(len(MOD_KEYS)+1):
         MOD_KEYS_COMBS += [''.join(x) for x in itertools.combinations(MOD_KEYS, i)]
 
+    # インデント幅
+    INDENT_WIDTH = 4
+
+    # FancyZonesのレイアウト数
+    FANCY_ZONE_LAYOUT_COUNT = 9
+
+    # モニター間マウス移動で操作可能なモニター数
+    MAX_MONITOR_COUNT = 4
+
+    # VLCメディアプレーヤーの早送り/巻き戻し設定
+    VLC_SEEK_COUNT = 3          # 1回のキー入力で行う早送り/巻き戻しの回数
+    VLC_SEEK_INTERVAL = 0.5     # 連続入力する際の間隔（秒）
+
     # --------------------------------------------------------------------
     # 汎用クラス
 
     # キー入力のクラス
     class Key():
+        """
+        キー入力を制御するクラス。
+
+        指定した間隔でキー入力を繰り返すことができます。
+        VLCなどのメディアプレーヤーでの早送り/巻き戻しに使用します。
+        """
         def __init__(self, key):
+            """
+            Keyクラスの初期化。
+
+            Args:
+                key: 入力するキーの名前
+            """
             #print(self, key)
             self.key = key
             self.last_time = time()
 
-        def inputCommand(self, count=1, interval=0):
+        def input_command(self, count=1, interval=0):
+            """
+            キー入力コマンドを生成します。
+
+            Args:
+                count: 一度に入力するキーの回数（デフォルト: 1）
+                interval: 連続入力を許可する最小間隔（秒）（デフォルト: 0）
+
+            Returns:
+                キー入力を実行する関数
+            """
             def func():
                 #print(self, self.key, self.last_time)
                 if time() > self.last_time + interval:
@@ -88,13 +131,18 @@ def configure(keymap):
     # --------------------------------------------------------------------
     # Pop List
 
-    def command_KeyhacMenuList():
+    def command_keyhac_menu_list():
+        """
+        Keyhacのメニューリストを表示するコマンド。
+
+        設定ファイルの編集とリロードのメニューを表示します。
+        """
         # If the list window is already opened, just close it
         if keymap.isListWindowOpened():
             keymap.cancelListWindow()
             return
 
-        def popListWindow():
+        def pop_list_window():
             items = [
                 ("Edit config.py",   keymap.command_EditConfig),
                 ("Reload config.py", keymap.command_ReloadConfig),
@@ -111,13 +159,19 @@ def configure(keymap):
 
         # Because the blocking procedure cannot be executed in the key-hook,
         # delayed-execute the procedure by delayedCall().
-        keymap.delayedCall(popListWindow, 0)
+        keymap.delayedCall(pop_list_window, 0)
 
     # --------------------------------------------------------------------
     # クリップボード
 
     # Add quote mark to current clipboard contents
-    def quoteClipboardText():
+    def quote_clipboard_text():
+        """
+        クリップボードのテキストの各行頭に引用マークを追加します。
+
+        Returns:
+            引用マークが追加されたテキスト
+        """
         s = getClipboardText()
         lines = s.splitlines(True)
         s = ""
@@ -126,23 +180,39 @@ def configure(keymap):
         return s
 
     # Indent current clipboard contents
-    def indentClipboardText():
+    def indent_clipboard_text():
+        """
+        クリップボードのテキストにインデントを追加します。
+
+        空行でない各行の先頭にINDENT_WIDTH分のスペースを追加します。
+
+        Returns:
+            インデントが追加されたテキスト
+        """
         s = getClipboardText()
         lines = s.splitlines(True)
         s = ""
         for line in lines:
             if line.lstrip():
-                line = " " * 4 + line
+                line = " " * INDENT_WIDTH + line
             s += line
         return s
 
     # Unindent current clipboard contents
-    def unindentClipboardText():
+    def unindent_clipboard_text():
+        """
+        クリップボードのテキストからインデントを削除します。
+
+        各行の先頭から最大INDENT_WIDTH分のスペースまたはタブを削除します。
+
+        Returns:
+            インデントが削除されたテキスト
+        """
         s = getClipboardText()
         lines = s.splitlines(True)
         s = ""
         for line in lines:
-            for i in range(4+1):
+            for i in range(INDENT_WIDTH + 1):
                 if i>=len(line) : break
                 if line[i]=='\t':
                     i+=1
@@ -152,34 +222,51 @@ def configure(keymap):
             s += line[i:]
         return s
 
-    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
+    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！"＃＄％＆'（）＊＋，−．／：；＜＝＞？＠［￥］＾＿'｛｜｝～０１２３４５６７８９　"
     half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
 
-    # Convert to half-with characters
-    def toHalfWidthClipboardText():
+    # Convert to half-width characters
+    def to_half_width_clipboard_text():
+        """
+        クリップボードのテキストを半角文字に変換します。
+
+        Returns:
+            半角文字に変換されたテキスト
+        """
         s = getClipboardText()
         s = s.translate(str.maketrans(full_width_chars,half_width_chars))
         return s
 
-    # Convert to full-with characters
-    def toFullWidthClipboardText():
+    # Convert to full-width characters
+    def to_full_width_clipboard_text():
+        """
+        クリップボードのテキストを全角文字に変換します。
+
+        Returns:
+            全角文字に変換されたテキスト
+        """
         s = getClipboardText()
         s = s.translate(str.maketrans(half_width_chars,full_width_chars))
         return s
 
-    def command_CustomizedClipboardList():
+    def command_customized_clipboard_list():
+        """
+        カスタマイズされたクリップボード操作メニューを表示するコマンド。
+
+        引用符追加、インデント操作、全角/半角変換のメニューを表示します。
+        """
         # If the list window is already opened, just close it
         if keymap.isListWindowOpened():
             keymap.cancelListWindow()
             return
 
-        def popListWindow():
+        def pop_list_window():
             items = [
-                ("Quote clipboard",    quoteClipboardText),
-                ("Indent clipboard",   indentClipboardText),
-                ("Unindent clipboard", unindentClipboardText),
-                ("To Half-Width",      toHalfWidthClipboardText),
-                ("To Full-Width",      toFullWidthClipboardText),
+                ("Quote clipboard",    quote_clipboard_text),
+                ("Indent clipboard",   indent_clipboard_text),
+                ("Unindent clipboard", unindent_clipboard_text),
+                ("To Half-Width",      to_half_width_clipboard_text),
+                ("To Full-Width",      to_full_width_clipboard_text),
             ]
 
             listers = [
@@ -193,7 +280,7 @@ def configure(keymap):
 
         # Because the blocking procedure cannot be executed in the key-hook,
         # delayed-execute the procedure by delayedCall().
-        keymap.delayedCall(popListWindow, 0)
+        keymap.delayedCall(pop_list_window, 0)
 
     # --------------------------------------------------------------------
     # キーマップ
@@ -274,7 +361,7 @@ def configure(keymap):
     keymap_global['U0-Semicolon']['K'] = lambda: keymap.InputTextCommand(datetime.datetime.now().strftime('%H%M%S'))()
     ## リストウィンドウ
     keymap_global['U0-Semicolon']['V'] = keymap.command_ClipboardList
-    keymap_global['U0-Semicolon']['M'] = command_KeyhacMenuList
+    keymap_global['U0-Semicolon']['M'] = command_keyhac_menu_list
     ## 括弧の入力
     keymap_global['U0-Semicolon']['2'] = 'S-2', 'S-2', 'Left'
     keymap_global['U0-Semicolon']['7'] = 'S-7', 'S-7', 'Left'
@@ -348,6 +435,17 @@ def configure(keymap):
 
     # モニター番号を指定して移動
     def mouse_move_between_monitor_command(monitor):
+        """
+        指定したモニター番号にマウスカーソルを移動するコマンドを生成します。
+
+        現在のモニター内での相対位置を維持したまま、指定したモニターに移動します。
+
+        Args:
+            monitor: 移動先のモニター番号
+
+        Returns:
+            マウス移動を実行する関数
+        """
         def run():
             mouse_x, mouse_y = pyauto.Input.getCursorPos()
             monitor_info = sorted(pyauto.Window.getMonitorInfo())
@@ -371,16 +469,25 @@ def configure(keymap):
 
         return run
 
-    for i in range(4):
+    for i in range(MAX_MONITOR_COUNT):
         keymap_global[f'LU1-{i+1}'] = mouse_move_between_monitor_command(i)
 
     # FancyZonesのレイアウト変更
     global fancy_zone_layout
     fancy_zone_layout = 1
     def fancy_zone_layout_change_command(step):
+        """
+        PowerToys FancyZonesのレイアウトを変更するコマンドを生成します。
+
+        Args:
+            step: レイアウトを変更するステップ数（正の値で次へ、負の値で前へ）
+
+        Returns:
+            レイアウト変更を実行する関数
+        """
         def run():
             global fancy_zone_layout
-            fancy_zone_layout = (fancy_zone_layout + step - 1) % 9 + 1
+            fancy_zone_layout = (fancy_zone_layout + step - 1) % FANCY_ZONE_LAYOUT_COUNT + 1
             keymap.InputKeyCommand('W-C-A-' + str(fancy_zone_layout))()
         return run
 
@@ -598,15 +705,15 @@ def configure(keymap):
     keymap_vlc['U0-Slash'] = 'A-C-Right'
 
     ## フットスイッチ
-    ### 左右のスイッチを長押ししていたら0.5秒あたり30秒移動
+    ### 左右のスイッチを長押ししていたら指定間隔で早送り/巻き戻し
     key_left = Key('Left')
     key_right = Key('Right')
-    keymap_vlc['O-'     + KEY_FOOT_LEFT]  = lambda: None                                  # ワンショットモディファイアを無効化
-    keymap_vlc['D-'     + KEY_FOOT_LEFT]  = key_left.inputCommand(count=3)                # 押された瞬間に入力
-    keymap_vlc['D-LU2-' + KEY_FOOT_LEFT]  = key_left.inputCommand(count=3, interval=0.5)  # 押されている間入力
-    keymap_vlc['O-'     + KEY_FOOT_RIGHT] = lambda: None                                  # ワンショットモディファイアを無効化
-    keymap_vlc['D-'     + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3)               # 押された瞬間に入力
-    keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3, interval=0.5) # 押されている間入力
+    keymap_vlc['O-'     + KEY_FOOT_LEFT]  = lambda: None                                                      # ワンショットモディファイアを無効化
+    keymap_vlc['D-'     + KEY_FOOT_LEFT]  = key_left.input_command(count=VLC_SEEK_COUNT)                       # 押された瞬間に入力
+    keymap_vlc['D-LU2-' + KEY_FOOT_LEFT]  = key_left.input_command(count=VLC_SEEK_COUNT, interval=VLC_SEEK_INTERVAL)  # 押されている間入力
+    keymap_vlc['O-'     + KEY_FOOT_RIGHT] = lambda: None                                                      # ワンショットモディファイアを無効化
+    keymap_vlc['D-'     + KEY_FOOT_RIGHT] = key_right.input_command(count=VLC_SEEK_COUNT)                      # 押された瞬間に入力
+    keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.input_command(count=VLC_SEEK_COUNT, interval=VLC_SEEK_INTERVAL) # 押されている間入力
 
     ### 中央のスイッチで再生・一時停止
     keymap_vlc['D-' + KEY_FOOT_CENTER] = lambda: None # 長押しされても入力しない
@@ -666,66 +773,15 @@ def configure(keymap):
     keymap_vsc['U0-Slash'] = 'C-S-P' # コマンドパレット
 
     # --------------------------------------------------------------------
-    # クリップボード
-
-    # Add quote mark to current clipboard contents
-    def quoteClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            s += keymap.quote_mark + line
-        return s
-
-    # Indent current clipboard contents
-    def indentClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            if line.lstrip():
-                line = " " * 4 + line
-            s += line
-        return s
-
-    # Unindent current clipboard contents
-    def unindentClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            for i in range(4+1):
-                if i>=len(line) : break
-                if line[i]=='\t':
-                    i+=1
-                    break
-                if line[i]!=' ':
-                    break
-            s += line[i:]
-        return s
-
-    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
-    half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
-
-    # Convert to half-with characters
-    def toHalfWidthClipboardText():
-        s = getClipboardText()
-        s = s.translate(str.maketrans(full_width_chars,half_width_chars))
-        return s
-
-    # Convert to full-with characters
-    def toFullWidthClipboardText():
-        s = getClipboardText()
-        s = s.translate(str.maketrans(half_width_chars,full_width_chars))
-        return s
+    # その他のカスタムクリップボードメニュー
 
     # Menu item list
     other_items = [
-        ("Quote clipboard",    quoteClipboardText),
-        ("Indent clipboard",   indentClipboardText),
-        ("Unindent clipboard", unindentClipboardText),
-        ("To Half-Width",      toHalfWidthClipboardText),
-        ("To Full-Width",      toFullWidthClipboardText),
+        ("Quote clipboard",    quote_clipboard_text),
+        ("Indent clipboard",   indent_clipboard_text),
+        ("Unindent clipboard", unindent_clipboard_text),
+        ("To Half-Width",      to_half_width_clipboard_text),
+        ("To Full-Width",      to_full_width_clipboard_text),
         ("Edit config.py",     keymap.command_EditConfig),
         ("Reload config.py",   keymap.command_ReloadConfig),
     ]
