@@ -155,13 +155,13 @@ def configure(keymap):
     full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
     half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
 
-    # Convert to half-with characters
+    # Convert to half-width characters
     def toHalfWidthClipboardText():
         s = getClipboardText()
         s = s.translate(str.maketrans(full_width_chars,half_width_chars))
         return s
 
-    # Convert to full-with characters
+    # Convert to full-width characters
     def toFullWidthClipboardText():
         s = getClipboardText()
         s = s.translate(str.maketrans(half_width_chars,full_width_chars))
@@ -707,13 +707,13 @@ def configure(keymap):
     full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
     half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
 
-    # Convert to half-with characters
+    # Convert to half-width characters
     def toHalfWidthClipboardText():
         s = getClipboardText()
         s = s.translate(str.maketrans(full_width_chars,half_width_chars))
         return s
 
-    # Convert to full-with characters
+    # Convert to full-width characters
     def toFullWidthClipboardText():
         s = getClipboardText()
         s = s.translate(str.maketrans(half_width_chars,full_width_chars))
