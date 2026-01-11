@@ -263,7 +263,9 @@ def configure(keymap):
 
     # ランチャー(PowerToys Run)
     keymap_global['O-U0-LCtrl'] = 'A-Space'
-    keymap_global['U0-Colon'] = 'A-Space'
+
+    # Espanso
+    keymap_global['U0-Colon'] = 'A-S-Space'
 
     # 入力補助
     keymap_global['U0-Semicolon'] = keymap.defineMultiStrokeKeymap(";=%Y/%m/%d :=%H:%M:%S j=%Y%m%d k=%H%M%S v=Clipboard m=KeyhacMenu 2=\"\" 7='' @=`` 8=() 9=() [=[] ]=[] {={} }={} ,=<> .=<>")
