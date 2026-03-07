@@ -39,6 +39,52 @@ def configure(keymap):
                     #print(self, self.key, self.last_time, 'input')
             return func
 
+    def is_active_exe(exe_name):
+        try:
+            return keymap.wnd.getProcessName().lower() == exe_name.lower()
+        except Exception:
+            return False
+
+    def create_hold_tap_handler(on_tap, on_hold_begin, on_hold_end, hold_delay_ms=350, is_active=lambda: True):
+        state = {
+            'pressed': False,
+            'holding': False,
+            'seq': 0,
+        }
+
+        def down():
+            if state['pressed']:
+                return
+
+            state['pressed'] = True
+            state['seq'] += 1
+            hold_seq = state['seq']
+
+            # キーリピートに依存せず長押しを判定する
+            def hold_timeout():
+                if (not is_active()) or (not state['pressed']) or state['holding'] or (state['seq'] != hold_seq):
+                    return
+                on_hold_begin()
+                state['holding'] = True
+
+            keymap.delayedCall(hold_timeout, hold_delay_ms)
+
+        def up():
+            if (not state['pressed']) and (not state['holding']):
+                return
+
+            is_tap = state['pressed'] and (not state['holding'])
+            if state['holding']:
+                on_hold_end()
+            if is_tap:
+                on_tap()
+
+            state['pressed'] = False
+            state['holding'] = False
+            state['seq'] += 1
+
+        return down, up
+
     # --------------------------------------------------------------------
     # 環境依存の特殊キーの定義
 
@@ -600,18 +646,7 @@ def configure(keymap):
     keymap_vlc['U0-Slash'] = 'A-C-Right'
 
     vlc_boost_holding_count = 0
-    vlc_center_pressed = False
-    vlc_center_boosting = False
-    vlc_center_hold_seq = 0
-    vlc_u0_b_pressed = False
-    vlc_u0_b_boosting = False
-    vlc_u0_b_hold_seq = 0
-
-    def vlc_is_active():
-        try:
-            return keymap.wnd.getProcessName().lower() == 'vlc.exe'
-        except Exception:
-            return False
+    vlc_is_active = lambda: is_active_exe('vlc.exe')
 
     def vlc_boost_begin():
         nonlocal vlc_boost_holding_count
@@ -628,26 +663,6 @@ def configure(keymap):
         if vlc_boost_holding_count == 0:
             keymap.InputTextCommand('=')() # 再生速度を標準に戻す
 
-    def vlc_center_switch_down():
-        nonlocal vlc_center_pressed, vlc_center_boosting, vlc_center_hold_seq
-        if vlc_center_pressed:
-            return
-
-        vlc_center_pressed = True
-        vlc_center_hold_seq += 1
-        hold_seq = vlc_center_hold_seq
-
-        # キーリピートに依存せず長押しを判定する
-        def vlc_center_hold_timeout():
-            nonlocal vlc_center_pressed, vlc_center_boosting, vlc_center_hold_seq
-            if (not vlc_is_active()):
-                return
-            if vlc_center_pressed and (vlc_center_hold_seq == hold_seq) and (not vlc_center_boosting):
-                vlc_boost_begin()
-                vlc_center_boosting = True
-
-        keymap.delayedCall(vlc_center_hold_timeout, 350)
-
     ## フットスイッチ
     ### 左右のスイッチを長押ししていたら0.5秒あたり30秒移動
     key_left = Key('Left')
@@ -660,58 +675,25 @@ def configure(keymap):
     keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3, interval=0.5) # 押されている間入力
 
     ### 中央のスイッチは短押しで再生・一時停止、長押し中は2倍速
+    vlc_center_switch_down, vlc_center_switch_up = create_hold_tap_handler(
+        on_tap=keymap.InputKeyCommand('Space'),
+        on_hold_begin=vlc_boost_begin,
+        on_hold_end=vlc_boost_end,
+        hold_delay_ms=350,
+        is_active=vlc_is_active,
+    )
     keymap_vlc['D-' + KEY_FOOT_CENTER] = vlc_center_switch_down
-    def vlc_center_switch_up():
-        nonlocal vlc_center_pressed, vlc_center_boosting, vlc_center_hold_seq
-        if (not vlc_center_pressed) and (not vlc_center_boosting):
-            return
-
-        is_tap = vlc_center_pressed and (not vlc_center_boosting)
-        if vlc_center_boosting:
-            vlc_boost_end()
-        if is_tap:
-            keymap.InputKeyCommand('Space')()
-
-        vlc_center_pressed = False
-        vlc_center_boosting = False
-        vlc_center_hold_seq += 1
     keymap_vlc['U-' + KEY_FOOT_CENTER] = vlc_center_switch_up
 
     ### U0-B は短押しで再生・一時停止、長押し中は2倍速
-    def vlc_u0_b_down():
-        nonlocal vlc_u0_b_pressed, vlc_u0_b_boosting, vlc_u0_b_hold_seq
-        if vlc_u0_b_pressed:
-            return
+    vlc_u0_b_down, vlc_u0_b_up = create_hold_tap_handler(
+        on_tap=keymap.InputKeyCommand('Space'),
+        on_hold_begin=vlc_boost_begin,
+        on_hold_end=vlc_boost_end,
+        hold_delay_ms=350,
+        is_active=vlc_is_active,
+    )
 
-        vlc_u0_b_pressed = True
-        vlc_u0_b_hold_seq += 1
-        hold_seq = vlc_u0_b_hold_seq
-
-        # キーリピートに依存せず長押しを判定する
-        def vlc_u0_b_hold_timeout():
-            nonlocal vlc_u0_b_pressed, vlc_u0_b_boosting, vlc_u0_b_hold_seq
-            if (not vlc_is_active()):
-                return
-            if vlc_u0_b_pressed and (vlc_u0_b_hold_seq == hold_seq) and (not vlc_u0_b_boosting):
-                vlc_boost_begin()
-                vlc_u0_b_boosting = True
-
-        keymap.delayedCall(vlc_u0_b_hold_timeout, 350)
-
-    def vlc_u0_b_up():
-        nonlocal vlc_u0_b_pressed, vlc_u0_b_boosting, vlc_u0_b_hold_seq
-        if (not vlc_u0_b_pressed) and (not vlc_u0_b_boosting):
-            return
-
-        is_tap = vlc_u0_b_pressed and (not vlc_u0_b_boosting)
-        if vlc_u0_b_boosting:
-            vlc_boost_end()
-        if is_tap:
-            keymap.InputKeyCommand('Space')()
-
-        vlc_u0_b_pressed = False
-        vlc_u0_b_boosting = False
-        vlc_u0_b_hold_seq += 1
     keymap_vlc['D-U0-B'] = vlc_u0_b_down
     keymap_vlc['U-U0-B'] = vlc_u0_b_up
     keymap_vlc['U-B'] = vlc_u0_b_up # Space(U0)を先に離しても戻せるようにする
