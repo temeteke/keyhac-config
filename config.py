@@ -599,8 +599,26 @@ def configure(keymap):
     keymap_vlc['U0-Period'] = 'A-C-Left'
     keymap_vlc['U0-Slash'] = 'A-C-Right'
 
+    vlc_boost_holding_count = 0
     vlc_center_down_time = 0.0
     vlc_center_boosting = False
+    vlc_u0_b_down_time = 0.0
+    vlc_u0_b_boosting = False
+
+    def vlc_boost_begin():
+        nonlocal vlc_boost_holding_count
+        if vlc_boost_holding_count == 0:
+            for _ in range(10):
+                keymap.InputKeyCommand('CloseBracket')()
+        vlc_boost_holding_count += 1
+
+    def vlc_boost_end():
+        nonlocal vlc_boost_holding_count
+        if vlc_boost_holding_count <= 0:
+            return
+        vlc_boost_holding_count -= 1
+        if vlc_boost_holding_count == 0:
+            keymap.InputTextCommand('=')() # 再生速度を標準に戻す
 
     def vlc_center_switch_down():
         nonlocal vlc_center_down_time, vlc_center_boosting
@@ -610,8 +628,7 @@ def configure(keymap):
 
         # 長押しが始まったら2倍速にする（押している間は1回だけ実行）
         if (not vlc_center_boosting) and (time() - vlc_center_down_time > 0.35):
-            for _ in range(10):
-                keymap.InputKeyCommand('CloseBracket')()
+            vlc_boost_begin()
             vlc_center_boosting = True
 
     ## フットスイッチ
@@ -630,12 +647,31 @@ def configure(keymap):
     def vlc_center_switch_up():
         nonlocal vlc_center_down_time, vlc_center_boosting
         if vlc_center_boosting:
-            keymap.InputTextCommand('=')() # 再生速度を標準に戻す
+            vlc_boost_end()
         else:
             keymap.InputKeyCommand('Space')()
         vlc_center_down_time = 0.0
         vlc_center_boosting = False
     keymap_vlc['U-' + KEY_FOOT_CENTER] = vlc_center_switch_up
+
+    ### U0-B は短押しで再生・一時停止、長押し中は2倍速
+    def vlc_u0_b_down():
+        nonlocal vlc_u0_b_down_time, vlc_u0_b_boosting
+        if vlc_u0_b_down_time == 0.0:
+            vlc_u0_b_down_time = time()
+        if (not vlc_u0_b_boosting) and (time() - vlc_u0_b_down_time > 0.35):
+            vlc_boost_begin()
+            vlc_u0_b_boosting = True
+    def vlc_u0_b_up():
+        nonlocal vlc_u0_b_down_time, vlc_u0_b_boosting
+        if vlc_u0_b_boosting:
+            vlc_boost_end()
+        else:
+            keymap.InputKeyCommand('Space')()
+        vlc_u0_b_down_time = 0.0
+        vlc_u0_b_boosting = False
+    keymap_vlc['D-U0-B'] = vlc_u0_b_down
+    keymap_vlc['U-U0-B'] = vlc_u0_b_up
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
