@@ -607,6 +607,12 @@ def configure(keymap):
     vlc_u0_b_boosting = False
     vlc_u0_b_hold_seq = 0
 
+    def vlc_is_active():
+        try:
+            return keymap.wnd.getProcessName().lower() == 'vlc.exe'
+        except Exception:
+            return False
+
     def vlc_boost_begin():
         nonlocal vlc_boost_holding_count
         if vlc_boost_holding_count == 0:
@@ -634,6 +640,8 @@ def configure(keymap):
         # キーリピートに依存せず長押しを判定する
         def vlc_center_hold_timeout():
             nonlocal vlc_center_pressed, vlc_center_boosting, vlc_center_hold_seq
+            if (not vlc_is_active()):
+                return
             if vlc_center_pressed and (vlc_center_hold_seq == hold_seq) and (not vlc_center_boosting):
                 vlc_boost_begin()
                 vlc_center_boosting = True
@@ -682,6 +690,8 @@ def configure(keymap):
         # キーリピートに依存せず長押しを判定する
         def vlc_u0_b_hold_timeout():
             nonlocal vlc_u0_b_pressed, vlc_u0_b_boosting, vlc_u0_b_hold_seq
+            if (not vlc_is_active()):
+                return
             if vlc_u0_b_pressed and (vlc_u0_b_hold_seq == hold_seq) and (not vlc_u0_b_boosting):
                 vlc_boost_begin()
                 vlc_u0_b_boosting = True
