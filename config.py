@@ -675,18 +675,18 @@ def configure(keymap):
     keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3, interval=0.5) # 押されている間入力
 
     ### 中央のスイッチは短押しで再生・一時停止、長押し中は2倍速
-    vlc_center_switch_down, vlc_center_switch_up = create_hold_tap_handler(
+    vlc_playback_pedal_down, vlc_playback_pedal_up = create_hold_tap_handler(
         on_tap=keymap.InputKeyCommand('Space'),
         on_hold_begin=vlc_boost_begin,
         on_hold_end=vlc_boost_end,
         hold_delay_ms=350,
         is_active=vlc_is_active,
     )
-    keymap_vlc['D-' + KEY_FOOT_CENTER] = vlc_center_switch_down
-    keymap_vlc['U-' + KEY_FOOT_CENTER] = vlc_center_switch_up
+    keymap_vlc['D-' + KEY_FOOT_CENTER] = vlc_playback_pedal_down
+    keymap_vlc['U-' + KEY_FOOT_CENTER] = vlc_playback_pedal_up
 
     ### U0-B は短押しで再生・一時停止、長押し中は2倍速
-    vlc_u0_b_down, vlc_u0_b_up = create_hold_tap_handler(
+    vlc_playback_keyboard_down, vlc_playback_keyboard_up = create_hold_tap_handler(
         on_tap=keymap.InputKeyCommand('Space'),
         on_hold_begin=vlc_boost_begin,
         on_hold_end=vlc_boost_end,
@@ -694,9 +694,9 @@ def configure(keymap):
         is_active=vlc_is_active,
     )
 
-    keymap_vlc['D-U0-B'] = vlc_u0_b_down
-    keymap_vlc['U-U0-B'] = vlc_u0_b_up
-    keymap_vlc['U-B'] = vlc_u0_b_up # Space(U0)を先に離しても戻せるようにする
+    keymap_vlc['D-U0-B'] = vlc_playback_keyboard_down
+    keymap_vlc['U-U0-B'] = vlc_playback_keyboard_up
+    keymap_vlc['U-B'] = vlc_playback_keyboard_up # Space(U0)を先に離しても戻せるようにする
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
