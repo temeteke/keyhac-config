@@ -98,6 +98,11 @@ def configure(keymap):
     KEY_FOOT_CENTER = f'({VK_FOOT_CENTER})'
     KEY_FOOT_RIGHT  = f'({VK_FOOT_RIGHT})'
 
+    def bind_hold_key(window_keymap, trigger_key, hold_key):
+        window_keymap['O-' + trigger_key] = lambda: None # ワンショットモディファイアを無効化
+        window_keymap['D-' + trigger_key] = f'D-{hold_key}'
+        window_keymap['U-' + trigger_key] = f'U-{hold_key}'
+
     # --------------------------------------------------------------------
     # デフォルトのモディファイアキーと組み合わせて押すキー
     # リストを作り最後にまとめてマッピングする
@@ -716,30 +721,18 @@ def configure(keymap):
 
     # Autodesk Fusion
     keymap_fusion360 = keymap.defineWindowKeymap(exe_name='Fusion360.exe')
-    keymap_fusion360['O-' + KEY_FOOT_LEFT]  = lambda: None  # ワンショットモディファイアを無効化
-    keymap_fusion360['D-' + KEY_FOOT_LEFT]  = 'D-S-MButton'
-    keymap_fusion360['U-' + KEY_FOOT_LEFT]  = 'U-S-MButton'
-    keymap_fusion360['O-' + KEY_FOOT_RIGHT] = lambda: None  # ワンショットモディファイアを無効化
-    keymap_fusion360['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
-    keymap_fusion360['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
+    bind_hold_key(keymap_fusion360, KEY_FOOT_LEFT, 'S-MButton')
+    bind_hold_key(keymap_fusion360, KEY_FOOT_RIGHT, 'MButton')
 
     # Cura
     keymap_cura = keymap.defineWindowKeymap(exe_name='UltiMaker-Cura.exe')
-    keymap_cura['O-' + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
-    keymap_cura['D-' + KEY_FOOT_LEFT]  = 'D-RButton'
-    keymap_cura['U-' + KEY_FOOT_LEFT]  = 'U-RButton'
-    keymap_cura['O-' + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
-    keymap_cura['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
-    keymap_cura['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
+    bind_hold_key(keymap_cura, KEY_FOOT_LEFT, 'RButton')
+    bind_hold_key(keymap_cura, KEY_FOOT_RIGHT, 'MButton')
 
     # PrusaSlicer
     keymap_prusa_slicer = keymap.defineWindowKeymap(exe_name='prusa-slicer.exe')
-    keymap_prusa_slicer['O-' + KEY_FOOT_LEFT]  = lambda: None # ワンショットモディファイアを無効化
-    keymap_prusa_slicer['D-' + KEY_FOOT_LEFT]  = 'D-LButton'
-    keymap_prusa_slicer['U-' + KEY_FOOT_LEFT]  = 'U-LButton'
-    keymap_prusa_slicer['O-' + KEY_FOOT_RIGHT] = lambda: None # ワンショットモディファイアを無効化
-    keymap_prusa_slicer['D-' + KEY_FOOT_RIGHT] = 'D-MButton'
-    keymap_prusa_slicer['U-' + KEY_FOOT_RIGHT] = 'U-MButton'
+    bind_hold_key(keymap_prusa_slicer, KEY_FOOT_LEFT, 'LButton')
+    bind_hold_key(keymap_prusa_slicer, KEY_FOOT_RIGHT, 'MButton')
 
     # GnuCash
     keymap_gnucash = keymap.defineWindowKeymap(exe_name='gnucash.exe')
