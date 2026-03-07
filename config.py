@@ -751,60 +751,6 @@ def configure(keymap):
     keymap_vsc['U0-V'] = 'C-Tab'
     keymap_vsc['U0-Slash'] = 'C-S-P' # コマンドパレット
 
-    # --------------------------------------------------------------------
-    # クリップボード
-
-    # Add quote mark to current clipboard contents
-    def quoteClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            s += keymap.quote_mark + line
-        return s
-
-    # Indent current clipboard contents
-    def indentClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            if line.lstrip():
-                line = " " * 4 + line
-            s += line
-        return s
-
-    # Unindent current clipboard contents
-    def unindentClipboardText():
-        s = getClipboardText()
-        lines = s.splitlines(True)
-        s = ""
-        for line in lines:
-            for i in range(4+1):
-                if i>=len(line) : break
-                if line[i]=='\t':
-                    i+=1
-                    break
-                if line[i]!=' ':
-                    break
-            s += line[i:]
-        return s
-
-    full_width_chars = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！”＃＄％＆’（）＊＋，−．／：；＜＝＞？＠［￥］＾＿‘｛｜｝～０１２３４５６７８９　"
-    half_width_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}～0123456789 "
-
-    # Convert to half-width characters
-    def toHalfWidthClipboardText():
-        s = getClipboardText()
-        s = s.translate(str.maketrans(full_width_chars,half_width_chars))
-        return s
-
-    # Convert to full-width characters
-    def toFullWidthClipboardText():
-        s = getClipboardText()
-        s = s.translate(str.maketrans(half_width_chars,full_width_chars))
-        return s
-
     # Menu item list
     other_items = [
         ("Quote clipboard",    quoteClipboardText),
