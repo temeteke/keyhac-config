@@ -599,6 +599,21 @@ def configure(keymap):
     keymap_vlc['U0-Period'] = 'A-C-Left'
     keymap_vlc['U0-Slash'] = 'A-C-Right'
 
+    vlc_center_down_time = 0.0
+    vlc_center_boosting = False
+
+    def vlc_center_switch_down():
+        nonlocal vlc_center_down_time, vlc_center_boosting
+        # D- は長押し中も繰り返し呼ばれるので、最初の1回だけ時刻を初期化する
+        if vlc_center_down_time == 0.0:
+            vlc_center_down_time = time()
+
+        # 長押しが始まったら2倍速にする（押している間は1回だけ実行）
+        if (not vlc_center_boosting) and (time() - vlc_center_down_time > 0.35):
+            for _ in range(10):
+                keymap.InputKeyCommand('CloseBracket')()
+            vlc_center_boosting = True
+
     ## フットスイッチ
     ### 左右のスイッチを長押ししていたら0.5秒あたり30秒移動
     key_left = Key('Left')
@@ -610,9 +625,17 @@ def configure(keymap):
     keymap_vlc['D-'     + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3)               # 押された瞬間に入力
     keymap_vlc['D-RU2-' + KEY_FOOT_RIGHT] = key_right.inputCommand(count=3, interval=0.5) # 押されている間入力
 
-    ### 中央のスイッチで再生・一時停止
-    keymap_vlc['D-' + KEY_FOOT_CENTER] = lambda: None # 長押しされても入力しない
-    keymap_vlc['U-' + KEY_FOOT_CENTER] = 'Space' # 離されたときに入力する
+    ### 中央のスイッチは短押しで再生・一時停止、長押し中は2倍速
+    keymap_vlc['D-' + KEY_FOOT_CENTER] = vlc_center_switch_down
+    def vlc_center_switch_up():
+        nonlocal vlc_center_down_time, vlc_center_boosting
+        if vlc_center_boosting:
+            keymap.InputTextCommand('=')() # 再生速度を標準に戻す
+        else:
+            keymap.InputKeyCommand('Space')()
+        vlc_center_down_time = 0.0
+        vlc_center_boosting = False
+    keymap_vlc['U-' + KEY_FOOT_CENTER] = vlc_center_switch_up
 
     # Splashtop
     keymap_splashtop = keymap.defineWindowKeymap(exe_name='strwinclt.exe')
@@ -736,4 +759,3 @@ def configure(keymap):
     keymap.cblisters += [
         ("Others", cblister_FixedPhrase(other_items)),
     ]
-
