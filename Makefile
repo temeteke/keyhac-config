@@ -7,11 +7,15 @@ DIRS := $(foreach dir,$(DIRS),$(shell [ -d $(dir) ] && echo $(dir)))
 DIR := $(word 1, $(DIRS))
 $(if $(DIR), ,$(error The installation directory is not found))
 
-.PHONY: all install uninstall
+.PHONY: all install install-config uninstall uninstall-config
 all:
 
-install: config.py
+install: install-config
+
+install-config: config.py
 	cp -a $+ $(DIR)
 
-uninstall:
+uninstall: uninstall-config
+
+uninstall-config:
 	rm -f $(DIR)/config.py
